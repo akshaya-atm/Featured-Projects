@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eef4f5">
+  <meta name="description" content="Watch AI contestants form alliances, face challenges, and vote for one sole survivor.">
+  <title>AI Outlast — The Island</title>
+  <link rel="stylesheet" href="style.css?v=12">
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./" aria-label="AI Outlast home"><span class="brand-mark" aria-hidden="true">O<span></span></span><span>AI OUTLAST<small>OUTWIT. OUTPLAY. OUTLAST.</small></span></a>
+    <div class="header-location">THE ISLAND <span>01 / TROPICAL WILDERNESS</span></div>
+    <button id="resetBtn" class="button quiet hidden" type="button">Leave game</button>
+  </header>
+
+  <main>
+    <section id="setupView" class="setup-layout">
+      <div class="arrival-scene">
+        <div class="scene-top"><span class="eyebrow">A GAME OF SOCIAL SURVIVAL</span><span class="edition">01</span></div>
+        <div class="arrival-copy"><span class="eyebrow accent">WELCOME TO THE ISLAND</span><h1>Everyone has a plan.<br>Only one survives.</h1><p>Choose your cast. Watch them make allies, take risks, and turn on each other.</p><div class="premise"><span>AI contestants</span><i></i><span>Real decisions</span><i></i><span>One winner</span></div></div>
+      </div>
+      <form id="setupForm" class="cast-setup">
+        <div class="section-heading"><div><span class="eyebrow accent">BEFORE THE FIRST TORCH</span><h2>Assemble the cast</h2></div><span class="count-badge" id="castCount">06</span></div>
+        <div class="setup-fields"><label>Tribes<select id="teamsSelect"><option value="2">2 tribes</option><option value="3">3 tribes</option><option value="4">4 tribes</option></select></label><label>Contestants<select id="playersSelect"></select></label></div>
+        <div class="cast-label"><span>THE CONTESTANTS</span><button id="randomizeBtn" class="text-button" type="button">Shuffle names ↻</button></div>
+        <div id="contestantGrid" class="contestant-grid"></div>
+        <label class="step-option"><input type="checkbox" id="stepMode" checked><span><strong>Pause between scenes</strong><small>Advance at your pace, like episodes of a show.</small></span></label>
+        <p id="setupError" class="error hidden" role="alert"></p>
+        <button id="launchBtn" class="button primary launch" type="submit">Set foot on the island <span aria-hidden="true">→</span></button>
+        <p class="setup-note">You’re the spectator. The contestants make the moves.</p>
+      </form>
+    </section>
+
+    <section id="gameView" class="hidden" aria-label="Island game">
+      <div class="game-hud"><div class="round-display"><span class="eyebrow">ROUND</span><strong id="roundNumber">01</strong></div><div class="hud-divider"></div><div class="hud-fact"><strong id="survivorCount">—</strong><span>remaining</span></div><div class="hud-fact"><strong id="tribeCount">—</strong><span>tribes</span></div><div class="playback"><span id="gameStatus" role="status">Arriving on the island</span></div></div>
+      <ol class="phase-track" id="phaseTrack"><li data-phase="draft"><span>01</span> The draft</li><li data-phase="camp"><span>02</span> Camp life</li><li data-phase="challenge"><span>03</span> The challenge</li><li data-phase="council"><span>04</span> Tribal council</li><li data-phase="finale"><span>05</span> The finale</li></ol>
+      <div id="connectionNotice" class="connection-notice hidden" role="status"></div>
+      <div class="island-layout">
+        <div class="main-stage"><section class="tribes-section"><div class="section-heading compact"><h2 id="rosterTitle">On the island</h2><span class="muted">Select for details</span></div><div id="tribesBoard"></div></section>
+          
+          <section id="hostCard" class="host-bar hidden" aria-label="Host commentary"><div class="host-emblem" aria-hidden="true">H</div><div><span class="eyebrow accent">THE HOST</span><p id="hostSpeech" aria-live="polite"></p><details class="host-history hidden" id="hostHistory"><summary>Earlier host messages</summary><div id="hostHistoryList"></div></details></div></section>
+
+          <section class="story-section" id="storySection"><div class="section-heading compact"><section class="island-scene" id="islandScene" aria-label="Current scene"><div class="scene-top"><span class="location-badge" id="sceneLocation">THE SHORE</span><span class="scene-weather">Tropical island · Dusk</span></div><div class="scene-copy"><span class="eyebrow accent" id="sceneEyebrow">THE ARRIVAL</span><h1 id="sceneTitle">Strangers on the shore.</h1><p id="sceneDescription">The cast is arriving. Every new face could be an ally—or a threat.</p></div><span class="scene-index" id="sceneIndex" aria-hidden="true">01</span></section><button id="resumeBtn" class="button primary hidden" type="button">Next scene <span aria-hidden="true">→</span></button><button id="newEventsBtn" class="text-button hidden" type="button">See new moments ↑</button></div><div class="discussion-columns"><div id="storyFeed" class="story-feed" aria-label="Game events"><p class="empty">The island is quiet. The first conversations are still to come.</p></div><section class="social-panel" aria-label="Alliances and deception"><span class="eyebrow accent">BEHIND THE PROMISES</span><h2>Alliances & deception</h2><div id="socialBonds"></div><h3 class="social-subtitle">Recent moves</h3><div id="socialMoves"><p class="empty">The first promises are still to come.</p></div></section></div></section>
+        </div>
+        <aside class="island-sidebar"><section class="profile-panel" id="profilePanel"><span class="eyebrow accent">THE CONTESTANTS</span><h2>Who will you root for?</h2><p class="muted">Select a contestant to see their strengths, alliances, and view of the game.</p></section><section class="journal-panel"><div class="section-heading compact"><h2>Island history</h2><span class="eyebrow" id="eliminatedCount">0 OUT</span></div><div id="islandHistory"><p class="empty">Every torch is still burning.</p></div></section></aside>
+      </div>
+      <details id="techDrawer" class="tech-drawer"><summary>Behind the scenes <span>Game log</span></summary><pre id="techLog"></pre></details>
+    </section>
+  </main>
+
+  <dialog id="winnerModal" class="winner-modal" aria-labelledby="winnerHeading"><div class="winner-content"><span class="eyebrow accent">THE ISLAND HAS ITS WINNER</span><div class="winner-laurel" aria-hidden="true">♛</div><h2 id="winnerHeading">Sole Survivor</h2><div class="winner-initials" id="winnerAvatar"></div><h3 id="winnerName"></h3><p id="winnerArchetype" class="accent"></p><p>Alliances were tested. Torches went out.<br>One contestant outlasted them all.</p><div id="winnerTally" class="winner-tally"></div><button id="winnerContinueBtn" class="button primary" type="button">Return to the island</button><button id="winnerCloseBtn" class="text-button" type="button">Start a new game</button></div></dialog>
+  <script src="app.js?v=10"></script>
+</body>
+</html>

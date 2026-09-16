@@ -1,0 +1,158 @@
+spring:
+  application:
+    name: Outlast
+server:
+  port: 8081
+
+cerebros:
+  base-url: https://api.cerebras.ai/v1
+  api-key: ${CEREBRAS_API_KEY:YOUR_CEREBRAS_API_KEY_HERE}
+groq:
+  base-url: https://api.groq.com/openai/v1
+  api-key: ${GROQ_API_KEY:YOUR_GROQ_API_KEY_HERE}
+ollama:
+  base-url: http://localhost:11434/v1
+  api-key: ollama
+gemini:
+  base-url: https://generativelanguage.googleapis.com/v1beta/openai
+  api-key: ${GEMINI_API_KEY:YOUR_GEMINI_API_KEY_HERE}
+world:
+  name: AI Outlast
+
+  location: Remote Uninhabited Tropical Island
+
+  premise: >
+    Contestants are stranded on a remote tropical island. 
+    Starting in teams, you compete in team challenges and vote to eliminate teammates at Tribal Council. 
+    Later, teams merge into a single group where you play individually for immunity, form alliances, and vote until only one survivor remains.
+
+  environment:
+    climate: Tropical
+    weather: Torrential rains, high humidity, and muddy ground conditions.
+    terrain:
+      - Dense rainforest
+      - Sandy beaches
+      - Freshwater streams
+      - Rocky cliffs
+      - Open grassland
+    wildlife:
+      - Birds
+      - Small mammals
+      - Reptiles
+      - Insects
+      - Marine life
+
+  resources:
+    - Wood
+    - Stone
+    - Fresh water
+    - Vines
+    - Bamboo
+    - Edible plants
+    - Fish
+
+  restrictions:
+    - No internet access
+    - No electricity
+    - No modern technology
+    - No communication with the outside world
+    - Only natural resources and challenge-provided items may be used
+    - Plans must be realistic within the world
+
+  rules:
+    - "Contestants are divided into teams."
+    - "You will compete in Team Challenges. Winning challenges grants safety; losing challenges forces your team to go to Tribal Council."
+    - "At Tribal Council, teammates vote to eliminate one player from their own team."
+    - "One team cannot sabotage the other team. You can only conspire and coordinate within your own team."
+    - "Your primary goal is to avoid elimination, build strong alliances, and outlast other contestants to win."
+
+  phases:
+    draft: "Team Selection / Draft phase. Teams are being formed."
+    challenge: "Team Challenge phase. Compete against the opposing team."
+    voting: "Tribal Council phase. Teammates vote to eliminate one player from their own team."
+
+  objective: >
+    Form alliances, win challenges for safety or individual immunity, avoid elimination at Tribal Council, and outlast everyone to be the sole survivor.
+
+  discussion:
+    max-rounds: 2
+    max-response-sentences: 2
+
+  voting:
+    self-vote-allowed: false
+    tie-breaker: captain
+
+  judging:
+    impartial: true
+    explanation-required: true
+llm:
+  provider: "groq" # Options: "groq", "ollama", "gemini"
+
+game:
+  auto-start: false
+  available-models:
+    - "openai/gpt-oss-20b"
+    - "openai/gpt-oss-120b"
+  host:
+    name: "The Host"
+    archetype: "Dramatic Showman"
+    traits: "Charismatic, dramatic, and witty. You thrive on suspense and big moments. You build tension before every reveal, speak in punchy short sentences, and make every word count. You are completely fair and impartial, but you never let that get in the way of great television."
+  limits:
+    max-question-words: 20
+    max-answer-words: 30
+    max-answer-sentences: 2
+    max-reason-sentences: 2
+    max-welcome-sentences: 4
+    max-camp-conversations: 2
+    max-camp-message-words: 20
+    max-secret-message-words: 10
+    max-reflection-summary-sentences: 4
+    max-challenge-idea-words: 35
+    max-challenge-upgrade-words: 45
+    max-strategy-message-words: 25
+
+  team-fallbacks:
+    - title: "Primitive Fire Making"
+      theme: "SURVIVAL"
+      scenario: "Both teams must build a fire using primitive friction techniques to boil a pot of stream water."
+      objective: "Be the first team to boil 1 liter of water."
+      materials: ["Flint and steel", "Dry tinder", "Firewood"]
+      rules: ["No modern fire-starters", "Must keep the fire lit for 5 minutes"]
+      rewards: ["Winning team earns team immunity"]
+    - title: "Raft Construction"
+      theme: "SURVIVAL"
+      scenario: "Teams must construct a seaworthy raft using logs and vine ropes to fetch supplies from a buoy."
+      objective: "Be the first team to paddle to the buoy and return."
+      materials: ["Logs", "Vine ropes", "Oars"]
+      rules: ["Raft must carry at least two players", "All team members must cross the finish line"]
+      rewards: ["Winning team earns team immunity"]
+    - title: "Shelter Build-Off"
+      theme: "SURVIVAL"
+      scenario: "Teams have 3 hours to construct a sturdy shelter that can withstand a simulated rainstorm."
+      objective: "Construct the sturdiest and most waterproof shelter."
+      materials: ["Bamboo stalks", "Palm leaves", "Vines", "Mud"]
+      rules: ["Must fit all active team members", "Must not use any nails or wire"]
+      rewards: ["Winning team earns team immunity"]
+
+  merge-fallbacks:
+    - title: "Endurance Hanging"
+      theme: "SURVIVAL"
+      scenario: "Contestants must hang from an overhead bar suspended over the water for as long as possible."
+      objective: "Last contestant hanging wins individual immunity."
+      materials: ["Overhead suspension bar"]
+      rules: ["Both hands must remain on the bar", "Touching the water results in elimination"]
+      rewards: ["Winner earns individual immunity"]
+    - title: "Target Shooting"
+      theme: "STRATEGY"
+      scenario: "Contestants shoot slingshots at targets representing their opponents' name tiles."
+      objective: "Shatter all of your opponent's tiles."
+      materials: ["Slingshot", "Clay pellets", "Name tiles"]
+      rules: ["Players take turns shooting", "Last remaining tile owner wins immunity"]
+      rewards: ["Winner earns individual immunity"]
+    - title: "Trivia Questionnaire"
+      theme: "SOCIAL"
+      scenario: "Players answer questions about their fellow contestants' personalities and behaviors."
+      objective: "Answer the most questions correctly."
+      materials: ["Slate chalkboard", "Chalk"]
+      rules: ["Each correct answer gains 1 point", "Highest score after 10 questions wins"]
+      rewards: ["Winner earns individual immunity"]

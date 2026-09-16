@@ -1,0 +1,453 @@
+/* ==========================================================================
+   AI Outlast — Control Room
+   Simple, light, low-color design. One accent (gold) used sparingly.
+   ========================================================================== */
+
+:root{
+  --bg:#f6f4f0;
+  --card:#ffffff;
+  --card-2:#faf9f6;
+  --border:#e7e4dc;
+  --text:#2a2926;
+  --text-dim:#8b877e;
+  --text-faint:#b5b1a7;
+  --gold:#b08a3e;
+  --danger:#b5504f;
+  --green:#6f8f5f;
+  --avatar:#b7b3a9;
+  --mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  padding:28px;
+}
+
+.hidden{display:none !important;}
+
+.wrap{max-width:1240px;margin:0 auto;}
+
+/* ---------------------------------------------------------------------- */
+/* Header                                                                  */
+/* ---------------------------------------------------------------------- */
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:16px;
+  margin-bottom:22px;
+  border-bottom:1px solid var(--border);
+  flex-wrap:wrap;
+  gap:12px;
+}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand .mark{font-size:18px;}
+.brand h1{font-size:15px;font-weight:700;letter-spacing:1px;}
+.brand .tag{font-size:12px;color:var(--text-dim);font-family:var(--mono);}
+
+.status-line{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-dim);font-family:var(--mono);flex-wrap:wrap;}
+.status-line .dot{width:6px;height:6px;border-radius:50%;background:var(--text-faint);display:inline-block;margin-right:6px;}
+.status-line .dot.on{background:var(--green);}
+.status-line .dot.paused{background:var(--gold);}
+.status-line .dot.failed{background:var(--danger);}
+.round-tag{background:var(--card-2);border:1px solid var(--border);padding:4px 10px;border-radius:6px;color:var(--text);}
+
+.header-actions{display:flex;gap:8px;align-items:center;}
+.icon-btn{
+  background:var(--card);border:1px solid var(--border);color:var(--text-dim);
+  font-family:var(--mono);font-size:11px;padding:6px 11px;border-radius:6px;cursor:pointer;
+}
+.icon-btn:hover{border-color:var(--gold);color:var(--text);}
+.icon-btn.danger:hover{border-color:var(--danger);color:var(--danger);}
+
+/* ---------------------------------------------------------------------- */
+/* Section labels                                                          */
+/* ---------------------------------------------------------------------- */
+.section-label{
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:2px;
+  color:var(--text-dim);
+  margin-bottom:12px;
+  text-transform:uppercase;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Setup / Launch page                                                     */
+/* ---------------------------------------------------------------------- */
+.setup-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:24px;
+  margin-bottom:20px;
+}
+.field-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin-bottom:22px;
+  padding-bottom:22px;
+  border-bottom:1px solid var(--border);
+}
+.field label{
+  display:block;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:1px;
+  color:var(--text-dim);
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.field select, .field input[type="text"]{
+  width:100%;
+  background:var(--card-2);
+  border:1px solid var(--border);
+  border-radius:7px;
+  padding:9px 11px;
+  font-size:13px;
+  font-family:var(--sans);
+  color:var(--text);
+}
+.field select:focus, .field input[type="text"]:focus{outline:none;border-color:var(--gold);}
+.field.toggle-field{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--card-2);border:1px solid var(--border);border-radius:7px;padding:9px 12px;
+}
+.field.toggle-field label{margin:0;}
+
+.switch{position:relative;display:inline-block;width:36px;height:20px;flex-shrink:0;}
+.switch input{opacity:0;width:0;height:0;}
+.switch .slider{position:absolute;inset:0;background:var(--border);border-radius:20px;transition:.2s;cursor:pointer;}
+.switch .slider::before{content:"";position:absolute;height:14px;width:14px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;}
+.switch input:checked + .slider{background:var(--gold);}
+.switch input:checked + .slider::before{transform:translateX(16px);}
+
+.setup-tabs-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.ghost-btn{
+  background:var(--card);border:1px solid var(--border);color:var(--text-dim);
+  font-family:var(--mono);font-size:11px;padding:7px 12px;border-radius:7px;cursor:pointer;
+}
+.ghost-btn:hover{border-color:var(--gold);color:var(--text);}
+
+.contestant-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:22px;}
+.contestant-row{display:flex;align-items:center;gap:10px;background:var(--card-2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;}
+.contestant-row .idx{font-family:var(--mono);font-size:11px;color:var(--text-faint);width:16px;flex-shrink:0;}
+.contestant-row input[type="text"]{flex:1;border:1px solid var(--border);background:var(--card);border-radius:6px;padding:7px 9px;font-size:13px;color:var(--text);}
+.contestant-row input[type="text"]:focus{outline:none;border-color:var(--gold);}
+.gender-toggle{display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;flex-shrink:0;}
+.gender-toggle button{background:var(--card);border:none;padding:7px 10px;font-size:11px;font-family:var(--mono);color:var(--text-dim);cursor:pointer;}
+.gender-toggle button.sel{background:var(--gold);color:#fff;}
+
+.launch-row{display:flex;justify-content:center;padding-top:6px;}
+.launch-btn{
+  background:var(--gold);color:#fff;border:none;font-family:var(--mono);font-size:13px;
+  letter-spacing:1px;padding:13px 30px;border-radius:8px;cursor:pointer;
+}
+.launch-btn:hover{filter:brightness(1.08);}
+.launch-btn:disabled{opacity:0.6;cursor:default;}
+.setup-error{
+  margin-top:12px;text-align:center;font-size:13px;color:var(--danger);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Host banner - full width, centered, scrolling recent lines              */
+/* ---------------------------------------------------------------------- */
+.host-banner{
+  width:100%;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-top:2px solid var(--gold);
+  border-radius:12px;
+  padding:20px 24px;
+  text-align:center;
+  margin-bottom:20px;
+}
+.host-banner .who{
+  font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--gold);
+  text-transform:uppercase;margin-bottom:10px;
+}
+#hostLines{max-height:190px;overflow-y:auto;scroll-behavior:smooth;}
+.host-line{max-width:680px;margin:0 auto;font-size:15px;line-height:1.55;padding:2px 0;}
+.host-line.past{color:var(--text-faint);font-size:13px;margin-top:6px;}
+.host-line.danger{color:var(--danger);}
+.host-line.placeholder{color:var(--text-faint);font-style:italic;font-size:13px;}
+
+/* Processing / thinking indicator */
+.thinking-indicator{
+  margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--text-faint);
+  text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.thinking-indicator .dot-flash{width:5px;height:5px;border-radius:50%;background:var(--gold);display:inline-block;animation:dot-flash 1.1s infinite ease-in-out;}
+.thinking-indicator .dot-flash:nth-child(2){animation-delay:.18s;}
+.thinking-indicator .dot-flash:nth-child(3){animation-delay:.36s;}
+@keyframes dot-flash{0%,80%,100%{opacity:.2;transform:scale(.8);}40%{opacity:1;transform:scale(1);}}
+
+.status-line .dot.syncing{animation:dot-flash 1s infinite ease-in-out;}
+
+/* ---------------------------------------------------------------------- */
+/* Cast grid ("Meet the Cast")                                             */
+/* ---------------------------------------------------------------------- */
+.cast-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+.cast-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,0.03);}
+.cast-card .top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.cast-avatar, .captain-avatar{
+  border-radius:50%;background:var(--avatar);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-family:var(--mono);flex-shrink:0;
+}
+.cast-avatar{width:34px;height:34px;font-size:12px;}
+.cast-name{font-size:14px;font-weight:700;}
+.cast-archetype{font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--text-dim);text-transform:uppercase;margin-top:2px;}
+.cast-quote{font-size:13px;font-style:italic;color:var(--text);line-height:1.5;}
+
+/* ---------------------------------------------------------------------- */
+/* Captain choosing                                                        */
+/* ---------------------------------------------------------------------- */
+.captain-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(220px,1fr));gap:16px;margin-bottom:24px;}
+.captain-card{background:var(--card);border:1px solid var(--border);border-top:2px solid var(--gold);border-radius:12px;padding:22px;text-align:center;}
+.captain-card .crown{font-size:20px;margin-bottom:8px;}
+.captain-avatar{width:52px;height:52px;font-size:16px;margin:0 auto 10px;}
+.captain-name{font-size:16px;font-weight:700;}
+.captain-role{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;margin:4px 0 2px;}
+.captain-team{font-size:12px;color:var(--text-dim);}
+
+/* ---------------------------------------------------------------------- */
+/* Draft pick board                                                        */
+/* ---------------------------------------------------------------------- */
+.pick-board{display:grid;grid-template-columns:repeat(auto-fit, minmax(280px,1fr));gap:16px;margin-bottom:24px;}
+.pick-team{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;}
+.pick-team .pick-team-head{font-size:13px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.pick-row{display:flex;align-items:center;gap:10px;padding:8px 11px;border:1px solid var(--border);border-radius:8px;background:var(--card-2);font-size:13px;margin-bottom:8px;}
+.pick-row:last-child{margin-bottom:0;}
+.pick-row .pick-num{font-family:var(--mono);font-size:11px;color:var(--text-faint);width:22px;flex-shrink:0;}
+.pick-row .av{width:22px;height:22px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.pick-row .picked-name{font-weight:600;}
+.pick-row .pick-note{color:var(--text-dim);font-size:12px;}
+
+/* ---------------------------------------------------------------------- */
+/* Stage: host-centered layout with one card per team                      */
+/* ---------------------------------------------------------------------- */
+.stage{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;}
+.card{
+  flex:1;min-width:300px;background:var(--card);border:1px solid var(--border);
+  border-radius:12px;display:flex;flex-direction:column;overflow:hidden;
+}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border);gap:8px;}
+.card-head .who{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;}
+.card-head .avatar-tiny{width:22px;height:22px;border-radius:50%;background:var(--card-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;}
+.phase-tag{
+  font-family:var(--mono);display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-dim);
+  background:var(--card-2);border:1px solid var(--border);padding:3px 8px;border-radius:20px;white-space:nowrap;
+}
+.phase-tag .pdot{width:6px;height:6px;border-radius:50%;background:var(--gold);}
+
+.feed{padding:14px;display:flex;flex-direction:column;gap:10px;min-height:120px;max-height:460px;overflow-y:auto;}
+.feed-empty{font-size:12px;color:var(--text-faint);font-style:italic;padding:6px 2px;}
+
+.msg{display:flex;gap:9px;}
+.msg .av{width:26px;height:26px;border-radius:50%;background:var(--card-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.msg .body{flex:1;min-width:0;}
+.msg .sender{font-size:11px;font-weight:700;color:var(--text-dim);margin-bottom:3px;}
+.msg .sender .sub{font-weight:400;color:var(--text-faint);margin-left:4px;}
+.bubble{background:var(--card-2);border:1px solid var(--border);border-radius:8px;padding:8px 11px;font-size:13px;line-height:1.45;}
+.msg.thought .bubble{font-style:italic;color:var(--text-dim);border-style:dashed;}
+.msg.danger .bubble{border-color:rgba(181,80,79,0.4);color:var(--danger);font-weight:600;}
+
+/* Secret / sealed message */
+.secret{
+  display:flex;align-items:center;gap:8px;background:transparent;border:1px dashed var(--border);
+  border-radius:8px;padding:7px 11px;font-size:12px;color:var(--text-dim);cursor:pointer;
+  max-width:fit-content;font-family:var(--mono);
+}
+.secret:hover{border-color:var(--gold);color:var(--text);}
+.secret.revealed{color:var(--text);border-style:solid;background:var(--card-2);}
+.secret .content{display:none;font-style:italic;font-family:var(--sans);}
+.secret.revealed .content{display:inline;}
+.secret.revealed .hint{display:none;}
+
+/* Roster footer (team cards) */
+.roster{display:flex;flex-wrap:wrap;gap:8px;padding:12px 14px;border-top:1px solid var(--border);background:var(--card-2);}
+.chip{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:4px 10px 4px 4px;font-size:12px;}
+.chip .av{width:20px;height:20px;border-radius:50%;background:var(--card-2);display:flex;align-items:center;justify-content:center;font-size:11px;}
+.chip.captain{border-color:var(--gold);}
+.chip .cap-star{font-size:10px;color:var(--gold);}
+.chip.eliminated{opacity:0.45;text-decoration:line-through;}
+.chip.immune{
+  border-color:var(--gold);background:linear-gradient(135deg, rgba(176,138,62,0.16), rgba(176,138,62,0.05));
+  font-weight:700;color:var(--text);
+  animation:immune-glow 1.8s ease-in-out infinite;
+}
+.chip.immune .cap-star{color:var(--gold);}
+.chip.immune .tag-mini{
+  background:var(--gold);color:#fff;border-color:var(--gold);font-weight:700;letter-spacing:1px;
+}
+.immune-shield{font-size:14px;margin-left:2px;}
+.chip.finalist-chip{border-color:var(--danger);box-shadow:0 0 0 2px rgba(181,80,79,0.16);}
+@keyframes immune-glow{
+  0%,100%{box-shadow:0 0 0 2px rgba(176,138,62,0.28), 0 2px 8px rgba(176,138,62,0.22);}
+  50%{box-shadow:0 0 0 4px rgba(176,138,62,0.4), 0 4px 16px rgba(176,138,62,0.4);}
+}
+
+.arch-tag{font-size:11px;color:var(--text-dim);font-weight:400;margin-left:3px;}
+
+/* Merge transition banner */
+.merge-banner{
+  text-align:center;padding:16px;margin-bottom:16px;border:1px dashed var(--gold);
+  border-radius:12px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--gold);
+  text-transform:uppercase;background:var(--card-2);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Final Showdown: last two players + the jury verdict                     */
+/* ---------------------------------------------------------------------- */
+.final-showdown-banner{
+  text-align:center;padding:24px 20px;margin-bottom:16px;border-radius:14px;
+  background:linear-gradient(135deg, rgba(176,138,62,0.12), rgba(181,80,79,0.07));
+  border:1px solid var(--gold);
+  animation:final-pulse 2.4s ease-in-out infinite;
+}
+@keyframes final-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(176,138,62,0.22);}
+  50%{box-shadow:0 0 0 10px rgba(176,138,62,0.05);}
+}
+.final-showdown-title{
+  font-family:var(--mono);font-size:16px;letter-spacing:3px;color:var(--gold);font-weight:700;
+  text-transform:uppercase;margin-bottom:4px;
+}
+.final-showdown-sub{font-size:12px;color:var(--text-dim);margin-bottom:18px;}
+.finalists-row{display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;}
+.finalist{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.finalist .av{
+  width:48px;height:48px;border-radius:50%;background:var(--card);border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+}
+.finalist-name{font-size:15px;font-weight:700;}
+.vs-mark{font-family:var(--mono);font-size:13px;letter-spacing:2px;color:var(--danger);font-weight:700;}
+
+.jury-panel{margin-top:20px;padding-top:16px;border-top:1px dashed var(--border);}
+.jury-panel-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--text-dim);
+  text-transform:uppercase;margin-bottom:12px;text-align:center;
+}
+.jury-columns{display:flex;gap:16px;flex-wrap:wrap;text-align:left;}
+.jury-columns .intrigue-section{flex:1;min-width:220px;padding:0;border-bottom:none;}
+.jury-columns .intrigue-body{max-height:200px;}
+
+/* ---------------------------------------------------------------------- */
+/* Stage after merge: 2/3 messages + 1/3 intrigue panel                    */
+/* ---------------------------------------------------------------------- */
+.stage.merged .card{flex:2 1 0;min-width:320px;}
+.stage.merged .intrigue-panel{flex:1 1 0;min-width:260px;}
+
+/* Pre-merge tribal council: only the losing team's card stays visible,      */
+/* paired with a vote-count panel — the winning team's card is display:none. */
+.stage.tribal-mode .card:not(.hidden){flex:2 1 0;min-width:320px;}
+.stage.tribal-mode .intrigue-panel{flex:1 1 0;min-width:260px;}
+.intrigue-item.vote-leader{border-color:rgba(181,80,79,0.4);background:rgba(181,80,79,0.06);}
+
+.intrigue-panel{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  display:flex;flex-direction:column;overflow:hidden;align-self:stretch;
+}
+.intrigue-head{
+  padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;
+  display:flex;align-items:center;gap:8px;
+}
+.intrigue-section{padding:12px 14px;border-bottom:1px solid var(--border);}
+.intrigue-section:last-child{border-bottom:none;}
+.intrigue-label{
+  font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--text-dim);
+  text-transform:uppercase;margin-bottom:9px;
+}
+.intrigue-body{display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto;}
+.intrigue-item{
+  display:flex;align-items:center;gap:6px;font-size:12px;line-height:1.4;
+  background:var(--card-2);border:1px solid var(--border);border-radius:8px;padding:7px 9px;flex-wrap:wrap;
+}
+.intrigue-item .av{width:20px;height:20px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.intrigue-item .pair-name{font-weight:600;}
+.intrigue-item .link-icon{font-size:11px;color:var(--text-faint);}
+.team-tag{
+  font-family:var(--mono);font-size:9px;letter-spacing:.5px;color:var(--text-dim);
+  background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1px 6px;text-transform:uppercase;
+}
+.tag-mini{
+  font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;
+  padding:2px 6px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--text-dim);
+}
+.tag-mini.danger{color:var(--danger);border-color:rgba(181,80,79,0.4);}
+.blindside-item{border-color:rgba(181,80,79,0.35);}
+
+/* ---------------------------------------------------------------------- */
+/* Winner modal                                                            */
+/* ---------------------------------------------------------------------- */
+.winner-modal{
+  position:fixed;inset:0;z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 50% 42%, rgba(176,138,62,0.30), rgba(42,41,38,0.72) 65%);
+  animation:winner-bg-in .4s ease;
+}
+@keyframes winner-bg-in{from{opacity:0;}to{opacity:1;}}
+.winner-card{
+  position:relative;background:var(--card);border:1px solid var(--border);border-top:4px solid var(--gold);
+  border-radius:16px;max-width:460px;width:90%;padding:42px 36px 36px;text-align:center;
+  box-shadow:0 24px 70px rgba(0,0,0,0.32), 0 0 0 1px rgba(176,138,62,0.08);
+  animation:winner-pop .55s cubic-bezier(.34,1.56,.64,1);
+  overflow:hidden;
+}
+@keyframes winner-pop{from{opacity:0;transform:scale(.82) translateY(8px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.winner-card .rays{
+  position:absolute;top:-120px;left:50%;width:520px;height:520px;transform:translateX(-50%);
+  background:conic-gradient(from 0deg, rgba(176,138,62,0.14) 0deg, transparent 18deg, transparent 36deg, rgba(176,138,62,0.14) 40deg, transparent 58deg, transparent 76deg, rgba(176,138,62,0.14) 80deg, transparent 98deg, transparent 116deg, rgba(176,138,62,0.14) 120deg, transparent 138deg, transparent 156deg, rgba(176,138,62,0.14) 160deg, transparent 178deg, transparent 196deg, rgba(176,138,62,0.14) 200deg, transparent 218deg, transparent 236deg, rgba(176,138,62,0.14) 240deg, transparent 258deg, transparent 276deg, rgba(176,138,62,0.14) 280deg, transparent 298deg, transparent 316deg, rgba(176,138,62,0.14) 320deg, transparent 338deg, transparent 360deg);
+  animation:rays-spin 18s linear infinite;pointer-events:none;
+}
+@keyframes rays-spin{from{transform:translateX(-50%) rotate(0deg);}to{transform:translateX(-50%) rotate(360deg);}}
+.winner-card .trophy{position:relative;font-size:56px;margin-bottom:6px;animation:trophy-bounce 1.8s ease-in-out infinite;}
+@keyframes trophy-bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.winner-card .eyebrow{position:relative;font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
+.winner-avatar{
+  position:relative;width:70px;height:70px;border-radius:50%;margin:8px auto 12px;
+  background:linear-gradient(160deg,var(--gold),#8f6f2f);color:#fff;font-family:var(--mono);
+  font-weight:700;font-size:24px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 6px rgba(176,138,62,0.14), 0 8px 20px rgba(176,138,62,0.35);
+}
+.winner-card .name{position:relative;font-size:28px;font-weight:800;margin-bottom:4px;letter-spacing:.3px;}
+.winner-archetype{position:relative;font-family:var(--mono);font-size:11px;letter-spacing:1.5px;color:var(--text-dim);text-transform:uppercase;margin-bottom:14px;}
+.winner-card p{position:relative;color:var(--text-dim);font-size:13px;line-height:1.5;margin-bottom:22px;}
+
+/* ---------------------------------------------------------------------- */
+/* Tech log drawer                                                         */
+/* ---------------------------------------------------------------------- */
+.tech-drawer{margin-top:20px;border:1px solid var(--border);border-radius:12px;background:var(--card);overflow:hidden;}
+.tech-drawer-head{
+  display:flex;align-items:center;justify-content:space-between;padding:10px 14px;
+  font-family:var(--mono);font-size:11px;color:var(--text-dim);cursor:pointer;text-transform:uppercase;letter-spacing:1px;
+}
+.tech-drawer-body{
+  max-height:220px;overflow-y:auto;padding:0 14px 12px;font-family:var(--mono);font-size:11px;color:var(--text-faint);
+  display:none;border-top:1px solid var(--border);
+}
+.tech-drawer.open .tech-drawer-body{display:block;padding-top:10px;}
+.tech-drawer-body div{padding:2px 0;white-space:pre-wrap;word-break:break-word;}
+
+/* ---------------------------------------------------------------------- */
+/* Misc                                                                     */
+/* ---------------------------------------------------------------------- */
+.empty-note{padding:14px;font-size:12px;color:var(--text-faint);font-style:italic;}
+
+/* Scrollbars */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--text-faint);}
+
+@media (max-width:900px){
+  .cast-grid{grid-template-columns:repeat(2,1fr);}
+  .field-grid{grid-template-columns:1fr;}
+  .contestant-grid{grid-template-columns:1fr;}
+}

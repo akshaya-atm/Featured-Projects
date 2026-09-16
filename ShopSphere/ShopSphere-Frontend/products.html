@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopSphere - Products Catalog</title>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/modals.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="css/products.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="navbar"></header>
+
+  <main class="catalog-container">
+    <div class="filter-section">
+      <h2>Categories</h2>
+      <div class="category-pills" id="categoryPills">
+        <button class="pill active" data-category="all">All Products</button>
+      </div>
+    </div>
+
+    <div class="products-header" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+      <div>
+        <h1 id="catalogTitle" style="margin: 0;">Explore Products</h1>
+        <span class="product-count" id="productCount">Loading products...</span>
+      </div>
+      <div class="search-wrap" style="max-width: 320px; width: 100%;">
+        <input type="text" id="searchInput" placeholder="🔍 Search products..." style="width: 100%; padding: 0.55rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; outline: none; box-sizing: border-radius: 8px;">
+      </div>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+      <!-- Dynamic product cards will be inserted here -->
+    </div>
+  </main>
+
+  <script src="js/common.js"></script>
+  <script src="js/products.js"></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+/* Floating draggable trigger -- replaces the old navbar "💬 Assistant" link (see
+   injectChatBotFab() in common.js). Defaults to fixed bottom-right; JS switches it to
+   left/top-based positioning the moment a drag starts so it can be moved anywhere on screen. */
+.chatbot-fab {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  color: #ffffff;
+  border: none;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+  z-index: 9998;
+  touch-action: none;
+  user-select: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.chatbot-fab:hover {
+  transform: scale(1.05);
+}
+
+.chatbot-fab.dragging {
+  cursor: grabbing;
+  transition: none;
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.55);
+}
+
+/* Chat Assistant Drawer — docks right, same slide-out shape as the cart drawer, just with
+   rounded corners on the outer edge instead of a hard-edged panel. */
+.chatbot-drawer-overlay {
+  justify-content: flex-end;
+  background: rgba(15, 23, 42, 0.2); /* Dim lightly, but don't obscure */
+  backdrop-filter: none; /* Remove blur so background updates (like cart badge) are visible in video demos */
+}
+
+.chatbot-drawer-panel {
+  background: var(--bg-card);
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  overflow: hidden;
+  box-shadow: -10px 0 25px rgba(0, 0, 0, 0.1);
+}
+
+.chatbot-drawer-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.chatbot-drawer-header-text h2 {
+  font-size: var(--font-lg);
+  margin: 0;
+}
+
+.chatbot-drawer-tagline {
+  margin: 0.25rem 0 0;
+  font-size: var(--font-sm);
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.chatbot-drawer-header button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+/* Message list -- flex column so bubbles stack top-to-bottom, and each bubble can align itself
+   independently (user messages right, bot messages left) via align-self. */
+.chatbot-drawer-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.chatbot-drawer-footer {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-subtle);
+}
+
+.chatbot-drawer-footer input {
+  flex: 1;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-sm);
+}
+
+.chatbot-drawer-footer button {
+  padding: 0.6rem 1.2rem;
+  background: var(--accent-green);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chatbot-drawer-footer button:hover {
+  background: #059669;
+}
+
+/* Each message = a label (sender name) stacked above its bubble. The wrapper carries the
+   left/right alignment; .chat-bubble's own align-self (below) still works standalone too, since
+   the typing indicator uses .chat-bubble-bot directly without this wrapper. */
+.chat-message-group {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+}
+
+.chat-message-group-user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.chat-message-group-bot {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.chat-sender-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin: 0 0.3rem 0.2rem;
+}
+
+/* Message bubbles -- appended into #chatBotMessages by appendChatBotMessage(role, text).
+   role is "user" or "bot", which picks which of the two classes below applies. */
+.chat-bubble {
+  max-width: 80%;
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--radius-md);
+  font-size: var(--font-sm);
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.chat-bubble-user {
+  align-self: flex-end;
+  background: var(--accent-green);
+  color: #ffffff;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-bubble-bot {
+  align-self: flex-start;
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-bottom-left-radius: 4px;
+}
+
+/* Typing indicator -- reuses .chat-bubble-bot's shape/position, just swaps the text for three
+   bouncing dots while a /chat request is in flight. */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.75rem 0.9rem;
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0.4;
+  animation: typing-bounce 1.2s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* Below this width, a fixed 400px-wide docked panel either overflows the screen or leaves an
+   awkward sliver of dimmed backdrop next to it -- on a phone the assistant should behave like
+   its own full-screen page instead of a "drawer". */
+@media (max-width: 640px) {
+  .chatbot-drawer-overlay {
+    padding: 0;
+  }
+
+  .chatbot-drawer-panel {
+    max-width: 100%;
+    border-radius: 0;
+  }
+
+  .chatbot-fab {
+    right: 1rem;
+    bottom: 1rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+  }
+}

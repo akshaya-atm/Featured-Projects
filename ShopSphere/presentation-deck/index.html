@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopSphere — Deep-Dive Technical Architecture</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- DevIcon Fonts -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="deck.css">
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="deck-header">
+    <div class="brand-block">
+      <div class="brand-logo-icon">S</div>
+      <div>
+        <h1 class="brand-title">ShopSphere</h1>
+      </div>
+      <span class="brand-tag">Deep-Dive Technical Architecture</span>
+    </div>
+
+    <div class="header-actions">
+      <a href="https://github.com/akshaya-atm/ShopSphere" target="_blank" rel="noopener" class="back-portfolio-btn">
+        <i class="devicon-github-original"></i> GitHub Repo
+      </a>
+    </div>
+  </header>
+
+  <!-- Auto-Play Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <!-- Main Presentation Container -->
+  <main class="presentation-container">
+    
+    <!-- Slides Viewport -->
+    <div class="slides-viewport" id="slidesViewport">
+      
+      <!-- Overlay Navigation Side Buttons -->
+      <button class="overlay-nav-btn left" id="overlayPrevBtn" aria-label="Previous Slide" title="Previous Slide (←)">&larr;</button>
+      <button class="overlay-nav-btn right" id="overlayNextBtn" aria-label="Next Slide" title="Next Slide (→)">&rarr;</button>
+
+      <!-- ==================== SLIDE 1: ARCHITECTURE & THREAD-SAFE FOUNDATION ==================== -->
+      <article class="slide-item active" data-slide="0">
+        <div class="slide-visual-col">
+          <div class="visual-wrapper">
+            <div class="visual-header-tabs">
+              <div class="visual-tabs-group">
+                <button class="visual-tab active" onclick="switchVisualTab(this, 'ui-0')">📷 IDE Package Structure</button>
+                <button class="visual-tab" onclick="switchVisualTab(this, 'code-0')">💻 ThreadLocal Filter Code</button>
+              </div>
+              <span class="brand-tag">Slide 1 Architecture</span>
+            </div>
+            
+            <div class="visual-tab-pane active" id="ui-0">
+              <img src="assets/media_1789550395341.png" alt="ShopSphere Backend 3-Tier Package Architecture in IDE" class="slide-visual-img">
+            </div>
+            
+            <div class="visual-tab-pane" id="code-0">
+              <div class="code-editor-window">
+                <div class="code-editor-body">
+<pre><code><span class="syn-cmnt">// 3-Tier Architecture Contract (Servlet -> Service -> Repository)</span>
+<span class="syn-kw">public class</span> <span class="syn-type">UserAuthFilter</span> <span class="syn-kw">implements</span> <span class="syn-type">Filter</span> {
+    
+    <span class="syn-kw">public void</span> <span class="syn-fn">doFilter</span>(<span class="syn-type">ServletRequest</span> req, <span class="syn-type">ServletResponse</span> res, <span class="syn-type">FilterChain</span> chain) {
+        <span class="syn-type">String</span> token = extractJwt(httpRequest);
+        <span class="syn-type">UserContext</span> context = jwtProvider.validateAndExtract(token);
+        
+        <span class="syn-cmnt">// Stateless ThreadLocal Context Mounting</span>
+        <span class="syn-type">CurrentUser</span>.set(context);
+        <span class="syn-kw">try</span> {
+            chain.doFilter(req, res);
+        } <span class="syn-kw">finally</span> {
+            <span class="syn-cmnt">// Mandatory eviction prevents ThreadLocal leaks across pool threads</span>
+            <span class="syn-type">CurrentUser</span>.clear();
+        }
+    }
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-content-col">
+          <div class="slide-subtitle-badge">Slide 1 of 5 &bull; Core Foundation</div>
+          <h2 class="slide-title">3-Tier Architecture & <span>Thread-Safety</span></h2>
+          
+          <div class="tech-tags-row">
+            <span class="tech-tag">16 Raw Servlets</span>
+            <span class="tech-tag">Zero Frameworks</span>
+            <span class="tech-tag">ThreadLocal Context</span>
+            <span class="tech-tag">HikariCP</span>
+          </div>
+
+          <ul class="captions-list">
+            <li class="caption-item">
+              <span class="caption-num">1</span>
+              <p class="caption-text"><strong>Framework-Free 3-Tier Architecture:</strong> Built with 16 raw `HttpServlet` dispatchers without Spring Boot overhead, separated across clean `Servlet -> Service -> Repository` boundaries with explicit Java interfaces (`ICartRepository`, `IAddressRepository`).</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">2</span>
+              <p class="caption-text"><strong>Stateless ThreadLocal Context:</strong> `UserAuthFilter` mounts a `UserContext` onto a `ThreadLocal` per HTTP request, featuring a mandatory `finally { CurrentUser.clear(); }` clause to eliminate multi-tenant context leakage across HikariCP worker threads.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">3</span>
+              <p class="caption-text"><strong>High-Throughput Connection Pooling:</strong> HikariCP connection pool integration with PostgreSQL prevents database connection starvation and handles burst traffic efficiently.</p>
+            </li>
+          </ul>
+
+          <div class="code-snippet-box">
+            <code>ThreadLocal&lt;UserContext&gt; <span class="highlight">CurrentUser</span></code>
+            <span>Thread-Safe Context</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==================== SLIDE 2: ROLE-BASED AI INJECTION & AGENTIC GUARDRAILS ==================== -->
+      <article class="slide-item" data-slide="1">
+        <div class="slide-visual-col">
+          <div class="visual-wrapper">
+            <div class="visual-header-tabs">
+              <div class="visual-tabs-group">
+                <button class="visual-tab active" onclick="switchVisualTab(this, 'dual-ai')">👥 Side-by-Side Agent Comparison</button>
+                <button class="visual-tab" onclick="switchVisualTab(this, 'mov-snapshot')">📷 AI Live Recording Frame</button>
+                <button class="visual-tab" onclick="switchVisualTab(this, 'code-1')">💻 Role Agent Dispatch Code</button>
+              </div>
+              <span class="brand-tag">Slide 2 AI Isolation</span>
+            </div>
+
+            <!-- Tab 1: Side-by-Side Dual Image Comparison Grid -->
+            <div class="visual-tab-pane active" id="dual-ai">
+              <div class="dual-image-grid">
+                
+                <!-- Left Card: Guest Agent -->
+                <div class="dual-image-card">
+                  <div class="card-header-badge guest">
+                    <span>👤 Guest AI Agent</span>
+                    <span style="opacity: 0.75; font-size: 0.65rem;">GuestChatTools</span>
+                  </div>
+                  <div class="card-img-wrapper">
+                    <img src="assets/ai_guest_registration.png" alt="Guest AI Agent collecting registration details">
+                  </div>
+                  <div class="card-footer-desc">
+                    <strong>Mounts Registration Tool:</strong> Prompts for Name, Email, Phone, and DOB to set up an account.
+                  </div>
+                </div>
+
+                <!-- Right Card: Authenticated Agent -->
+                <div class="dual-image-card">
+                  <div class="card-header-badge auth">
+                    <span>🔐 Auth AI Agent</span>
+                    <span style="opacity: 0.75; font-size: 0.65rem;">AuthChatTools</span>
+                  </div>
+                  <div class="card-img-wrapper">
+                    <img src="assets/ai_auth_rejection.png" alt="Authenticated AI Agent rejecting account creation">
+                  </div>
+                  <div class="card-footer-desc">
+                    <strong>Evicts Registration Tool:</strong> Detects active login and safely rejects creation.
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Tab 2: Snapshot extracted from demo_ai_assistant.mov -->
+            <div class="visual-tab-pane" id="mov-snapshot">
+              <img src="assets/ai_demo_snapshot.png" alt="Live AI Recording Snapshot Frame" class="slide-visual-img">
+            </div>
+
+            <!-- Tab 3: Backend Code -->
+            <div class="visual-tab-pane" id="code-1">
+              <div class="code-editor-window">
+                <div class="code-editor-body">
+<pre><code><span class="syn-cmnt">// Dynamic Tool Suite Construction by Role (ChatServlet.java)</span>
+<span class="syn-kw">this</span>.guestAiService = <span class="syn-kw">new</span> <span class="syn-type">AIChatService</span>(commonTools, guestTools);
+<span class="syn-kw">this</span>.userAiService  = <span class="syn-kw">new</span> <span class="syn-type">AIChatService</span>(commonTools, authTools);
+<span class="syn-kw">this</span>.adminAiService = <span class="syn-kw">new</span> <span class="syn-type">AIChatService</span>(commonTools, authTools, adminTools);
+
+<span class="syn-cmnt">// Guest Agent (GuestChatTools) has registerAccount -> asks for Name, Email, Phone, DOB</span>
+<span class="syn-cmnt">// Logged-in Agent (AuthChatTools) lacks GuestChatTools -> rejects creation request!</span>
+
+<span class="syn-annotation">@Tool</span>(<span class="syn-str">"Places order for cart items..."</span>)
+<span class="syn-kw">public</span> <span class="syn-type">String</span> <span class="syn-fn">placeOrder</span>(<span class="syn-type">String</span> addressID, <span class="syn-type">boolean</span> userHasConfirmed) {
+    <span class="syn-kw">if</span> (!userHasConfirmed) {
+        <span class="syn-kw">return</span> <span class="syn-str">"SYSTEM ACTION REQUIRED: Tell user total and address, ask confirmation. Wait before userHasConfirmed=true."</span>;
+    }
+    <span class="syn-kw">return</span> orderService.checkoutCart(<span class="syn-type">CurrentUser</span>.getUserId(), addressID);
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-content-col">
+          <div class="slide-subtitle-badge">Slide 2 of 5 &bull; Advanced LLM Architecture</div>
+          <h2 class="slide-title">Dynamic AI Injection & <span>Prompt Isolation</span></h2>
+          
+          <div class="tech-tags-row">
+            <span class="tech-tag">LangChain4j</span>
+            <span class="tech-tag">Prompt Injection Isolation</span>
+            <span class="tech-tag">Human-in-the-Loop Interlock</span>
+            <span class="tech-tag">Tool Context Eviction</span>
+          </div>
+
+          <ul class="captions-list">
+            <li class="caption-item">
+              <span class="caption-num">1</span>
+              <p class="caption-text"><strong>Role-Scoped LangChain4j Instantiation:</strong> `ChatServlet` dynamically constructs 3 isolated AI service instances (`guestAiService`, `userAiService`, `adminAiService`) configured strictly with role-appropriate tool suites (`GuestChatTools`, `AuthChatTools`, `AdminChatTools`).</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">2</span>
+              <p class="caption-text"><strong>Hardened Prompt Injection Defense:</strong> Registration tools are completely omitted from the authenticated agent's tool context. When logged in, asking to register causes the AI to safely reject the request (<em>"You are already logged in"</em>), because registration tool schemas physically do not exist in the prompt context.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">3</span>
+              <p class="caption-text"><strong>Human-in-the-Loop 2-Phase Interlock:</strong> Irreversible financial mutations (`placeOrder`) require `userHasConfirmed=true`. If false, the server halts tool execution and forces the agent to prompt the user for explicit human confirmation first.</p>
+            </li>
+          </ul>
+
+          <div class="code-snippet-box">
+            <code>guestAiService(GuestChatTools) vs <span class="highlight">userAiService(AuthChatTools)</span></code>
+            <span>Context Evicted</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==================== SLIDE 3: FEFO INVENTORY & COMPENSATING SAGA ==================== -->
+      <article class="slide-item" data-slide="2">
+        <div class="slide-visual-col">
+          <div class="visual-wrapper">
+            <div class="visual-header-tabs">
+              <div class="visual-tabs-group">
+                <button class="visual-tab active" onclick="switchVisualTab(this, 'movement-ledger')">📷 Audit Ledger (stock_movements)</button>
+                <button class="visual-tab" onclick="switchVisualTab(this, 'fefo-batches')">📷 Batch Expiry Management</button>
+                <button class="visual-tab" onclick="switchVisualTab(this, 'code-2')">💻 Saga Rollback SQL</button>
+              </div>
+              <span class="brand-tag">Slide 3 Inventory</span>
+            </div>
+
+            <!-- Tab 1: Stock Movements Audit Ledger UI -->
+            <div class="visual-tab-pane active" id="movement-ledger">
+              <img src="assets/stock_movement_ledger.png" alt="Manage Stock Movement History Audit Ledger UI showing SALE -4" class="slide-visual-img">
+            </div>
+
+            <!-- Tab 2: FEFO Batch Expiry Management UI -->
+            <div class="visual-tab-pane" id="fefo-batches">
+              <img src="assets/media_1789550664042.png" alt="Manage Batch Stock and Expiry Management UI" class="slide-visual-img">
+            </div>
+
+            <!-- Tab 3: Saga Rollback SQL Code -->
+            <div class="visual-tab-pane" id="code-2">
+              <div class="code-editor-window">
+                <div class="code-editor-body">
+<pre><code><span class="syn-cmnt">-- FEFO Pessimistic Lock Query (Line 156)</span>
+<span class="syn-kw">SELECT</span> batch_id, available_quantity <span class="syn-kw">FROM</span> product_batches
+<span class="syn-kw">WHERE</span> product_id = ? <span class="syn-kw">AND</span> available_quantity > <span class="syn-num">0</span>
+  <span class="syn-kw">AND</span> (expiry_date <span class="syn-kw">IS NULL OR</span> expiry_date >= CURRENT_DATE)
+<span class="syn-kw">ORDER BY</span> expiry_date <span class="syn-kw">ASC FOR UPDATE</span>;
+
+<span class="syn-cmnt">// Compensating Saga Rollback (Line 214)</span>
+<span class="syn-kw">public void</span> <span class="syn-fn">restoreStock</span>(<span class="syn-type">int</span> productId, <span class="syn-type">int</span> quantity, <span class="syn-type">String</span> type) {
+    <span class="syn-cmnt">// Reverses partially applied stock on multi-item checkout failure</span>
+    <span class="syn-type">String</span> updateSql = <span class="syn-str">"UPDATE product_batches SET available_quantity = available_quantity + ? WHERE batch_id = ?"</span>;
+    <span class="syn-type">String</span> movementSql = <span class="syn-str">"INSERT INTO stock_movements (batch_id, product_id, quantity_change, movement_type) VALUES (?, ?, ?, 'RESTORE')"</span>;
+    <span class="syn-cmnt">// Executes atomic SQL update and ledger audit entry</span>
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-content-col">
+          <div class="slide-subtitle-badge">Slide 3 of 5 &bull; Concurrency & Resilience</div>
+          <h2 class="slide-title">FEFO Inventory & <span>Compensating Saga</span></h2>
+          
+          <div class="tech-tags-row">
+            <span class="tech-tag">SELECT FOR UPDATE</span>
+            <span class="tech-tag">FEFO Allocation</span>
+            <span class="tech-tag">Compensating Saga Pattern</span>
+            <span class="tech-tag">Audit Ledger</span>
+          </div>
+
+          <ul class="captions-list">
+            <li class="caption-item">
+              <span class="caption-num">1</span>
+              <p class="caption-text"><strong>FEFO Allocation & Pessimistic Row Locking:</strong> Queries inventory batches ordered by `expiry_date ASC NULLS LAST`, acquiring database locks with `SELECT ... FOR UPDATE` to eliminate race conditions and overselling during concurrent checkouts.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">2</span>
+              <p class="caption-text"><strong>Compensating Saga Pattern:</strong> On multi-product checkout failure midway, `OrderService` iterates backwards through processed items and calls `productBatchRepository.restoreStock()`, guaranteeing eventual inventory consistency.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">3</span>
+              <p class="caption-text"><strong>Dual-Movement Audit Ledger (`stock_movements`):</strong> Every stock change (like `SALE` `-4` or `RESTORE` `+4`) is logged with timestamp, movement type, batch ID, and quantity delta into `stock_movements` for 100% auditability.</p>
+            </li>
+          </ul>
+
+          <div class="code-snippet-box">
+            <code>restoreStock() &rarr; <span class="highlight">stock_movements (RESTORE)</span></code>
+            <span>Compensating Saga</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==================== SLIDE 4: FULL-STACK SYNC & ZERO-DEPENDENCY FRONTEND ==================== -->
+      <article class="slide-item" data-slide="3">
+        <div class="slide-visual-col">
+          <div class="visual-wrapper">
+            <div class="visual-header-tabs">
+              <div class="visual-tabs-group">
+                <button class="visual-tab active" onclick="switchVisualTab(this, 'dual-fe')">👥 Side-by-Side UI & Cart Drawer</button>
+                <button class="visual-tab" onclick="switchVisualTab(this, 'code-3')">💻 JS Sync Pipeline Code</button>
+              </div>
+              <span class="brand-tag">Slide 4 Full-Stack</span>
+            </div>
+
+            <!-- Tab 1: Side-by-Side Catalog & Cart Drawer Grid -->
+            <div class="visual-tab-pane active" id="dual-fe">
+              <div class="dual-image-grid">
+                
+                <!-- Left Card: 2-Column Catalog -->
+                <div class="dual-image-card">
+                  <div class="card-header-badge guest">
+                    <span>🛍️ 2-Column Product Grid</span>
+                    <span style="opacity: 0.75; font-size: 0.65rem;">Responsive CSS Grid</span>
+                  </div>
+                  <div class="card-img-wrapper">
+                    <img src="assets/media_1789597868004.png" alt="2-Column Product Catalog with Dynamic SQL Discount Badges">
+                  </div>
+                  <div class="card-footer-desc">
+                    <strong>SQL-Engine Offloading:</strong> Renders 2-column catalog with PostgreSQL `MIN(CASE WHEN ...)` dynamic discount pricing.
+                  </div>
+                </div>
+
+                <!-- Right Card: Synced Cart Drawer -->
+                <div class="dual-image-card">
+                  <div class="card-header-badge auth">
+                    <span>🛒 Synced Cart Drawer</span>
+                    <span style="opacity: 0.75; font-size: 0.65rem;">Post-AI Re-hydration</span>
+                  </div>
+                  <div class="card-img-wrapper">
+                    <img src="assets/media_1789598010639.png" alt="Shopping Cart Drawer with Quantity Steppers and Dynamic Total">
+                  </div>
+                  <div class="card-footer-desc">
+                    <strong>Post-AI Re-hydration:</strong> Fires `renderCartDrawerItemsFromDB()` after `/chat` turns to sync AI mutations.
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Tab 2: Code -->
+            <div class="visual-tab-pane" id="code-3">
+              <div class="code-editor-window">
+                <div class="code-editor-body">
+<pre><code><span class="syn-cmnt">// common.js - Post-AI State Re-hydration</span>
+<span class="syn-kw">async function</span> <span class="syn-fn">sendChatMessage</span>(message) {
+    <span class="syn-kw">const</span> data = <span class="syn-kw">await</span> authFetch(<span class="syn-str">'/chat'</span>, { 
+        method: <span class="syn-str">'POST'</span>, 
+        body: JSON.stringify({ message }) 
+    });
+    
+    <span class="syn-cmnt">// Re-fetch cart & pricing after AI execution</span>
+    <span class="syn-kw">await</span> refreshCartBadge();
+    <span class="syn-kw">if</span> (<span class="syn-kw">typeof</span> renderCartDrawerItemsFromDB === <span class="syn-str">'function'</span>) {
+        <span class="syn-kw">await</span> renderCartDrawerItemsFromDB();
+    }
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-content-col">
+          <div class="slide-subtitle-badge">Slide 4 of 5 &bull; Full-Stack UX & Performance</div>
+          <h2 class="slide-title">Full-Stack Sync & <span>Vanilla Frontend</span></h2>
+          
+          <div class="tech-tags-row">
+            <span class="tech-tag">Post-AI Re-hydration</span>
+            <span class="tech-tag">Contextual Login Queue</span>
+            <span class="tech-tag">SQL-Driven Pricing</span>
+            <span class="tech-tag">Draggable FAB</span>
+          </div>
+
+          <ul class="captions-list">
+            <li class="caption-item">
+              <span class="caption-num">1</span>
+              <p class="caption-text"><strong>Post-AI State Re-hydration Pipeline:</strong> After every `/chat` HTTP response, `common.js` automatically fires `refreshCartBadge()` and `renderCartDrawerItemsFromDB()` to sync UI components with backend state mutated silently by AI tool executions.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">2</span>
+              <p class="caption-text"><strong>Deferred Action Queue (`pendingLoginCallback`):</strong> Guest user interactions (such as Add to Cart) trigger an inline modal, stash the pending callback, and automatically execute the queued action post-authentication without page redirection.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">3</span>
+              <p class="caption-text"><strong>Database Engine Offloading:</strong> Discount pricing (`MIN(CASE WHEN ...)`) and active inventory counts (`SUM(available_quantity)` with `expiry_date >= CURRENT_DATE`) are calculated directly inside PostgreSQL SQL queries, avoiding Java N+1 loops.</p>
+            </li>
+          </ul>
+
+          <div class="code-snippet-box">
+            <code>post-chat &rarr; <span class="highlight">renderCartDrawerItemsFromDB()</span></code>
+            <span>Zero-Friction Sync</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==================== SLIDE 5: SECURITY BOUNDARY & DEFENSE-IN-DEPTH ==================== -->
+      <article class="slide-item" data-slide="4">
+        <div class="slide-visual-col">
+          <div class="visual-wrapper">
+            <div class="visual-header-tabs">
+              <div class="visual-tabs-group">
+                <button class="visual-tab active" onclick="switchVisualTab(this, 'ui-4')">📷 Login Required Modal</button>
+                <button class="visual-tab" onclick="switchVisualTab(this, 'code-4')">💻 Security Filter Code</button>
+              </div>
+              <span class="brand-tag">Slide 5 Defense-in-Depth</span>
+            </div>
+
+            <div class="visual-tab-pane active" id="ui-4">
+              <img src="assets/media_1789550765096.png" alt="Contextual Guest Login Required Modal UI" class="slide-visual-img">
+            </div>
+
+            <div class="visual-tab-pane" id="code-4">
+              <div class="code-editor-window">
+                <div class="code-editor-body">
+<pre><code><span class="syn-cmnt">// Anti-Zombie Token Validation (UserAuthFilter.java)</span>
+<span class="syn-kw">try</span> (<span class="syn-type">PreparedStatement</span> stmt = conn.prepareStatement(
+     <span class="syn-str">"SELECT 1 FROM users WHERE user_id = ?"</span>)) {
+    stmt.setInt(<span class="syn-num">1</span>, userId);
+    <span class="syn-kw">if</span> (!stmt.executeQuery().next()) {
+        sendError(res, HttpServletResponse.SC_UNAUTHORIZED, <span class="syn-str">"User does not exist"</span>);
+        <span class="syn-kw">return</span>;
+    }
+}
+
+<span class="syn-cmnt">// Defense-in-Depth Admin Verification (AdminFilter.java)</span>
+<span class="syn-kw">try</span> (<span class="syn-type">PreparedStatement</span> stmt = conn.prepareStatement(
+     <span class="syn-str">"SELECT user_type FROM users WHERE user_id = ?"</span>)) {
+    stmt.setInt(<span class="syn-num">1</span>, userId);
+    <span class="syn-type">ResultSet</span> rs = stmt.executeQuery();
+    <span class="syn-kw">if</span> (!rs.next() || !<span class="syn-str">"ADMIN"</span>.equalsIgnoreCase(rs.getString(<span class="syn-str">"user_type"</span>))) {
+        sendError(res, HttpServletResponse.SC_FORBIDDEN, <span class="syn-str">"Admin privileges required"</span>);
+        <span class="syn-kw">return</span>;
+    }
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-content-col">
+          <div class="slide-subtitle-badge">Slide 5 of 5 &bull; Security & DevOps</div>
+          <h2 class="slide-title">Security Boundary & <span>Defense-in-Depth</span></h2>
+          
+          <div class="tech-tags-row">
+            <span class="tech-tag">Anti-Zombie Tokens</span>
+            <span class="tech-tag">DB-Level Admin Auth</span>
+            <span class="tech-tag">Regex CORS Filter</span>
+            <span class="tech-tag">Flyway DB</span>
+          </div>
+
+          <ul class="captions-list">
+            <li class="caption-item">
+              <span class="caption-num">1</span>
+              <p class="caption-text"><strong>Anti-Zombie Token Validation:</strong> `UserAuthFilter` executes a lightweight SQL probe (`SELECT 1 FROM users WHERE user_id = ?`) on every request, instantly invalidating JWT tokens belonging to deleted or deactivated user accounts.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">2</span>
+              <p class="caption-text"><strong>Database-Level Admin Authorization:</strong> `AdminFilter` re-evaluates `user_type = 'ADMIN'` directly against PostgreSQL, refusing to rely solely on unverified client JWT token claim payloads.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">3</span>
+              <p class="caption-text"><strong>Boundary Controls & Migrations:</strong> `@WebFilter("/*")` enforces strict regex-based localhost origin matching, while Flyway delivers deterministic, version-controlled database schema migrations.</p>
+            </li>
+          </ul>
+
+          <div class="code-snippet-box">
+            <code>SELECT user_type FROM users <span class="highlight">WHERE user_id = ?</span></code>
+            <span>Defense-in-Depth</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Sticky High-Visibility Controls Bar Footer -->
+    <footer class="deck-controls-bar">
+      <div class="controls-left">
+        <button class="ctrl-btn ctrl-btn-play" id="playPauseBtn" aria-label="Play or Pause Auto-Play" title="Toggle Auto-Play Demo">
+          <span id="playIcon">▶</span>
+          <span id="playText">Auto Play</span>
+        </button>
+        <div class="slide-counter" id="slideCounter">Slide 1 of 5</div>
+      </div>
+
+      <div class="controls-center">
+        <button class="ctrl-btn" id="prevBtn" aria-label="Previous Slide" title="Previous Slide">&larr; Prev</button>
+        <div class="dots-indicator" id="dotsIndicator">
+          <span class="dot active" data-index="0"></span>
+          <span class="dot" data-index="1"></span>
+          <span class="dot" data-index="2"></span>
+          <span class="dot" data-index="3"></span>
+          <span class="dot" data-index="4"></span>
+        </div>
+        <button class="ctrl-btn" id="nextBtn" aria-label="Next Slide" title="Next Slide">Next &rarr;</button>
+      </div>
+
+      <div class="controls-right">
+        <span class="key-hint">Keys: &larr; / &rarr; / Space</span>
+        <button class="ctrl-btn" id="fullscreenBtn" aria-label="Fullscreen" title="Toggle Fullscreen">⛶ Fullscreen</button>
+      </div>
+    </footer>
+  </main>
+
+  <script src="deck.js"></script>
+</body>
+</html>

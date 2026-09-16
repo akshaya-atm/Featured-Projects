@@ -1,0 +1,26 @@
+# ==========================================================================
+   ShopSphere — Git Ignore Specification
+   ==========================================================================
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE & Editor Files
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.smarttomcat/
+
+# Maven Build Output & Logs
+target/
+**/target/
+*.log
+scratch/

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopSphere - Admin Dashboard & Store Management</title>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/modals.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="navbar"></header>
+
+  <main class="admin-wrapper">
+
+    <div class="admin-header-row">
+      <div class="admin-title-group">
+        <h1>Admin Control Panel</h1>
+        <p>Full control over catalog products, categories, dynamic discounts, and customer order fulfillment.</p>
+      </div>
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="btn-primary" onclick="openProductModal()">+ Add Product</button>
+        <button class="btn-primary" style="background: #0284c7;" onclick="openCategoryModal()">+ Add Category</button>
+      </div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon green">📦</div>
+        <div class="metric-info">
+          <h4>Total Orders</h4>
+          <div class="metric-value" id="metricTotalOrders">0</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon blue">💰</div>
+        <div class="metric-info">
+          <h4>Total Revenue</h4>
+          <div class="metric-value" id="metricTotalRevenue">₹0.00</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon amber">🍎</div>
+        <div class="metric-info">
+          <h4>Catalog Products</h4>
+          <div class="metric-value" id="metricTotalProducts">0</div>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon purple">🏷️</div>
+        <div class="metric-info">
+          <h4>Store Categories</h4>
+          <div class="metric-value" id="metricTotalCategories">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-tabs-bar">
+      <button class="tab-btn active" onclick="switchAdminTab('ordersTab')">📦 Customer Orders</button>
+      <button class="tab-btn" onclick="switchAdminTab('productsTab')">🍎 Products Management</button>
+      <button class="tab-btn" onclick="switchAdminTab('categoriesTab')">📂 Categories Management</button>
+      <button class="tab-btn" onclick="switchAdminTab('discountsTab')">🏷️ Discounts & Promotions</button>
+    </div>
+
+    <div id="ordersTab" class="tab-content">
+      <div class="dashboard-card">
+        <div class="card-header-flex">
+          <h2 style="font-size: 1.2rem;">Customer Orders Fulfillment</h2>
+          <span style="font-size: 0.85rem; color: #64748b;">Update fulfillment statuses in real-time</span>
+        </div>
+        <div class="data-table-container" id="adminOrdersList">
+          <p style="color: #94a3b8; padding: 2rem; text-align: center;">Loading orders...</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="productsTab" class="tab-content" style="display: none;">
+      <div class="dashboard-card">
+        <div class="card-header-flex">
+          <div>
+            <h2 style="font-size: 1.2rem;">Store Catalog Products</h2>
+            <p style="color: #64748b; font-size: 0.85rem;">Add, edit, or delete items in the store catalog.</p>
+          </div>
+          <button class="btn-primary" onclick="openProductModal()">+ Add New Product</button>
+        </div>
+        <div class="data-table-container" id="adminProductsList">
+          <p style="color: #94a3b8; padding: 2rem; text-align: center;">Loading products...</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="categoriesTab" class="tab-content" style="display: none;">
+      <div class="dashboard-card">
+        <div class="card-header-flex">
+          <div>
+            <h2 style="font-size: 1.2rem;">Store Categories</h2>
+            <p style="color: #64748b; font-size: 0.85rem;">Create, edit, or remove product categories.</p>
+          </div>
+          <button class="btn-primary" style="background: #0284c7;" onclick="openCategoryModal()">+ Add New Category</button>
+        </div>
+        <div class="data-table-container" id="adminCategoriesList">
+          <p style="color: #94a3b8; padding: 2rem; text-align: center;">Loading categories...</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="discountsTab" class="tab-content" style="display: none;">
+      <div class="dashboard-card">
+        <div class="card-header-flex">
+          <div>
+            <h2 style="font-size: 1.2rem;">Store Promotional Discounts</h2>
+            <p style="color: #64748b; font-size: 0.85rem;">Configure Birthday %, Area Pincode %, and Flash Sale discounts live from database.</p>
+          </div>
+          <button class="btn-primary" onclick="openDiscountModal()">+ Add New Offer</button>
+        </div>
+        <div class="data-table-container" id="adminDiscountsList">
+          <p style="color: #94a3b8; padding: 2rem; text-align: center;">Loading store discounts...</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal 1: Product Add / Edit Form -->
+  <div class="modal-overlay" id="productModal">
+    <div class="admin-modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 id="productModalTitle" style="font-size: 1.25rem; color: #0f172a;">+ Add New Product</h3>
+        <button onclick="closeProductModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+      </div>
+
+      <form id="productForm">
+        <input type="hidden" id="prodId">
+        <div class="form-group">
+          <label for="prodName">Product Name</label>
+          <input type="text" id="prodName" class="form-control" placeholder="e.g. Organic Alphonso Mangoes" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prodPrice">Price (₹)</label>
+            <input type="number" step="0.01" id="prodPrice" class="form-control" placeholder="e.g. 150.00" required>
+          </div>
+          <div class="form-group">
+            <label for="prodUnit">Unit Value (e.g. 500 g / 1 L)</label>
+            <input type="text" id="prodUnit" class="form-control" placeholder="e.g. 500 g" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prodDesc">Description</label>
+          <textarea id="prodDesc" class="form-control" rows="2" placeholder="Product details and description..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="prodImg">Image URL</label>
+          <input type="url" id="prodImg" class="form-control" placeholder="https://images.unsplash.com/..." required>
+        </div>
+
+        <div class="form-group">
+          <label for="prodCategory">Category</label>
+          <select id="prodCategory" class="form-control" required>
+            <option value="" disabled selected>Select Category</option>
+          </select>
+        </div>
+
+        <div id="prodInitialStockSection" style="border-top: 1px dashed #cbd5e1; padding-top: 1rem; margin-top: 1rem;">
+          <h4 style="font-size: 0.9rem; color: #334155; margin-bottom: 0.75rem;">📦 Initial Inventory Batch</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="prodInitialQty">Initial Quantity</label>
+              <input type="number" min="0" id="prodInitialQty" class="form-control" placeholder="e.g. 50">
+            </div>
+            <div class="form-group">
+              <label for="prodInitialSource">Source / Supplier</label>
+              <input type="text" id="prodInitialSource" class="form-control" placeholder="e.g. Local Supplier">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="prodInitialExpiry">Expiry Date (Optional)</label>
+            <input type="date" id="prodInitialExpiry" class="form-control">
+          </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" onclick="closeProductModal()" style="padding: 0.65rem 1.25rem; background: #e2e8f0; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Cancel</button>
+          <button type="submit" class="btn-primary">Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Category Add / Edit Form -->
+  <div class="modal-overlay" id="categoryModal">
+    <div class="admin-modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 id="categoryModalTitle" style="font-size: 1.25rem; color: #0f172a;">+ Add New Category</h3>
+        <button onclick="closeCategoryModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+      </div>
+
+      <form id="categoryForm">
+        <input type="hidden" id="catId">
+        <div class="form-group">
+          <label for="catName">Category Name</label>
+          <input type="text" id="catName" class="form-control" placeholder="e.g. Organic & Bio" required>
+        </div>
+
+        <div class="form-group">
+          <label for="catDesc">Category Description</label>
+          <input type="text" id="catDesc" class="form-control" placeholder="Short summary..." required>
+        </div>
+
+        <div class="form-group">
+          <label for="catImg">Category Image URL</label>
+          <input type="url" id="catImg" class="form-control" placeholder="https://images.unsplash.com/..." required>
+        </div>
+
+        <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+          <input type="checkbox" id="catPerishable" style="width: auto; margin: 0;">
+          <label for="catPerishable" style="margin: 0; cursor: pointer;">Perishable (products in this category show the "🌿 Fresh Today" badge)</label>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" onclick="closeCategoryModal()" style="padding: 0.65rem 1.25rem; background: #e2e8f0; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Cancel</button>
+          <button type="submit" class="btn-primary" style="background: #0284c7;">Save Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Create New Discount Form -->
+  <div class="modal-overlay" id="discountModal">
+    <div class="admin-modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 id="discountModalTitle" style="font-size: 1.25rem; color: #0f172a;">+ Configure New Discount Offer</h3>
+        <button onclick="closeDiscountModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+      </div>
+
+      <form id="createDiscountForm">
+        <input type="hidden" id="discId">
+        <div class="form-group">
+          <label for="discName">Discount Offer Name</label>
+          <input type="text" id="discName" class="form-control" placeholder="e.g. Birthday Extravaganza / Pincode 600001 Special" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="discType">Discount Type</label>
+            <select id="discType" class="form-control">
+              <option value="PERCENTAGE">PERCENTAGE (%)</option>
+              <option value="FLAT_AMOUNT">FLAT AMOUNT (₹)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="discValue">Discount Value</label>
+            <input type="number" step="0.01" id="discValue" class="form-control" placeholder="e.g. 20 (for 20%)" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="discScope">Target Scope</label>
+            <select id="discScope" class="form-control" onchange="toggleDiscountScopeFields()">
+              <option value="ORDER">ORDER WIDE</option>
+              <option value="PRODUCT">PRODUCT SPECIFIC</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="discMinOrder">Min Order Amount (₹)</label>
+            <input type="number" step="0.01" id="discMinOrder" class="form-control" placeholder="e.g. 300 (Optional)">
+          </div>
+        </div>
+
+        <!-- Only shown/required when Target Scope = PRODUCT SPECIFIC -->
+        <div class="form-group" id="discProductGroup" style="display: none;">
+          <label for="discProductId">Which Product?</label>
+          <select id="discProductId" class="form-control">
+            <option value="" disabled selected>Select a product</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="discPincodeGroup">
+          <label for="discPincode">Target Pincode (Area Discount)</label>
+          <input type="text" id="discPincode" class="form-control" placeholder="e.g. 600001 (Optional - leave blank for all)">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="discValidFrom">Valid From</label>
+            <input type="datetime-local" id="discValidFrom" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="discValidUntil">Valid Until</label>
+            <input type="datetime-local" id="discValidUntil" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+          <input type="checkbox" id="discIsBirthday" style="width: 18px; height: 18px; cursor: pointer;">
+          <label for="discIsBirthday" style="margin: 0; cursor: pointer;">🎂 Mark as Birthday Special Discount (Only active on user's birthday)</label>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" onclick="closeDiscountModal()" style="padding: 0.65rem 1.25rem; background: #e2e8f0; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Cancel</button>
+          <button type="submit" class="btn-primary">Save & Publish Discount</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Manage Stock (Batches) for a Product -->
+  <div class="modal-overlay" id="batchManageModal">
+    <div class="admin-modal-card" style="max-width: 640px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 id="batchManageModalTitle" style="font-size: 1.25rem; color: #0f172a;">📦 Manage Stock</h3>
+        <button onclick="closeBatchManageModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 0.5rem;">
+        <button type="button" id="batchViewToggleBtn" onclick="toggleBatchView()" style="padding: 0.3rem 0.7rem; background: #f1f5f9; color: #334155; border: none; border-radius: 6px; font-weight: 600; font-size: 0.8rem; cursor: pointer;">📜 View Stock History</button>
+      </div>
+
+      <div id="batchListContainer" style="margin-bottom: 1.5rem; max-height: 240px; overflow-y: auto;">
+        <!-- Existing batches, or stock history when toggled -->
+      </div>
+
+      <form id="batchForm" style="border-top: 1px solid #e2e8f0; padding-top: 1.25rem;">
+        <input type="hidden" id="batchId">
+        <input type="hidden" id="batchProductId">
+        <h4 id="batchFormTitle" style="font-size: 0.95rem; color: #334155; margin-bottom: 0.75rem;">+ Add New Batch</h4>
+
+        <div class="form-group">
+          <label for="batchSource">Source / Supplier</label>
+          <input type="text" id="batchSource" class="form-control" placeholder="e.g. Local Organic Farm - Coonoor" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="batchDate">Batch Date</label>
+            <input type="date" id="batchDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="batchExpiry">Expiry Date</label>
+            <input type="date" id="batchExpiry" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="batchQuantity">Available Quantity</label>
+          <input type="number" min="0" id="batchQuantity" class="form-control" placeholder="e.g. 30" required>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" id="batchFormCancelBtn" onclick="resetBatchForm()" style="padding: 0.5rem 1rem; background: #e2e8f0; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; display: none;">Cancel Edit</button>
+          <button type="submit" class="btn-primary">Save Batch</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

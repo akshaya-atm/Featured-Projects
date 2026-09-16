@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Outlast — Control Room</title>
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <span class="mark">🏝️</span>
+      <div><h1>AI OUTLAST</h1></div>
+      <span class="tag">control_room</span>
+    </div>
+    <div class="status-line">
+      <span><span class="dot" id="status-dot"></span><span id="status-text">not started</span></span>
+      <span class="round-tag" id="phase-label">setup</span>
+      <span class="round-tag" id="round-label">round_00</span>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="icon-btn hidden" id="resumeBtn">▶ resume</button>
+      <button type="button" class="icon-btn danger hidden" id="resetBtn">■ reset</button>
+    </div>
+  </header>
+
+  <!-- ===================== SETUP / LAUNCH VIEW ===================== -->
+  <div id="setupView">
+    <div class="section-label">[ new simulation ]</div>
+    <div class="setup-card">
+      <div class="field-grid">
+        <div class="field">
+          <label for="teamsSelect">Number of Teams</label>
+          <select id="teamsSelect">
+            <option value="2" selected>2 Teams</option>
+            <option value="3">3 Teams</option>
+            <option value="4">4 Teams</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="playersSelect">Number of Players</label>
+          <select id="playersSelect">
+            <option value="4">4 Players</option>
+            <option value="6" selected>6 Players</option>
+            <option value="8">8 Players</option>
+            <option value="12">12 Players</option>
+            <option value="16">16 Players</option>
+          </select>
+        </div>
+        <div class="field toggle-field">
+          <label for="stepMode">Step-by-Step Mode</label>
+          <label class="switch">
+            <input type="checkbox" id="stepMode" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setup-tabs-header">
+        <div class="section-label" style="margin-bottom:0;">[ contestants ]</div>
+        <button type="button" class="ghost-btn" id="randomizeBtn">⟳ auto-generate names</button>
+      </div>
+      <div class="contestant-grid" id="contestantGrid"></div>
+
+      <div class="launch-row">
+        <button type="button" class="launch-btn" id="launchBtn">▶ launch simulation</button>
+      </div>
+      <div class="setup-error hidden" id="setupError"></div>
+    </div>
+  </div>
+
+  <!-- ===================== HOST BANNER (always visible once running) ===================== -->
+  <div class="host-banner hidden" id="hostBanner">
+    <div class="who">🎤 host</div>
+    <div id="hostLines"></div>
+    <div class="thinking-indicator hidden" id="thinkingIndicator"><span class="dot-flash"></span><span class="dot-flash"></span><span class="dot-flash"></span> the story is being written…</div>
+  </div>
+
+  <!-- ===================== EARLY GAME: cast / captains / pick board ===================== -->
+  <div id="earlyGameView" class="hidden">
+    <div id="castSection">
+      <div class="section-label">[ meet the cast ]</div>
+      <div class="cast-grid" id="castGrid"></div>
+    </div>
+
+    <div id="captainsSection" class="hidden">
+      <div class="section-label">[ captains chosen ]</div>
+      <div class="captain-grid" id="captainGrid"></div>
+    </div>
+
+    <div id="pickSection" class="hidden">
+      <div class="section-label">[ team pick ]</div>
+      <div class="pick-board" id="pickBoard"></div>
+    </div>
+  </div>
+
+  <!-- ===================== STAGE: host + one card per team (collapses at merge) ===================== -->
+  <div class="stage hidden" id="stage"></div>
+
+  <!-- ===================== TECH LOG DRAWER ===================== -->
+  <div class="tech-drawer hidden" id="techDrawer">
+    <div class="tech-drawer-head" id="techDrawerHead">[ behind the scenes — engine log ] <span id="techToggleLabel">show</span></div>
+    <div class="tech-drawer-body" id="techDrawerBody"></div>
+  </div>
+
+</div>
+
+<!-- ===================== WINNER MODAL ===================== -->
+<div class="winner-modal hidden" id="winnerModal">
+  <div class="winner-card">
+    <div class="rays" aria-hidden="true"></div>
+    <div class="eyebrow">sole survivor</div>
+    <div class="trophy">🏆</div>
+    <div class="winner-avatar" id="winnerAvatar">?</div>
+    <div class="name" id="winnerName">—</div>
+    <div class="winner-archetype" id="winnerArchetype"></div>
+    <p>has outwitted, outplayed, and outlasted everyone else to win the game.</p>
+    <button type="button" class="launch-btn" id="winnerCloseBtn">back to setup</button>
+  </div>
+</div>
+
+<script src="app.js?v=1"></script>
+</body>
+</html>

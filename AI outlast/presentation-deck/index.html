@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Outlast — Technical Architecture & Multi-Agent Deck</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- DevIcon Fonts -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="deck.css">
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="deck-header">
+    <div class="brand-block">
+      <div class="brand-logo-icon">🏝️</div>
+      <div>
+        <h1 class="brand-title">AI Outlast</h1>
+      </div>
+      <span class="brand-tag">Deep-Dive Technical Architecture</span>
+    </div>
+
+    <div class="header-actions">
+      <a href="../README.md" class="back-portfolio-btn">
+        <i class="devicon-github-original"></i> Project Docs
+      </a>
+    </div>
+  </header>
+
+  <!-- Auto-Play Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <!-- Main Presentation Container -->
+  <main class="presentation-container">
+    
+    <!-- Slides Viewport -->
+    <div class="slides-viewport" id="slidesViewport">
+      
+      <!-- Overlay Navigation Side Buttons -->
+      <button class="overlay-nav-btn left" id="overlayPrevBtn" aria-label="Previous Slide" title="Previous Slide (←)">&larr;</button>
+      <button class="overlay-nav-btn right" id="overlayNextBtn" aria-label="Next Slide" title="Next Slide (→)">&rarr;</button>
+
+      <!-- ==================== SLIDE 1: MULTI-AGENT ORCHESTRATION & ASYMMETRIC MEMORY ==================== -->
+      <article class="slide-item active" data-slide="0">
+        <div class="slide-visual-col">
+          <div class="visual-wrapper">
+            <div class="visual-header-tabs">
+              <div class="visual-tabs-group">
+                <button class="visual-tab active" onclick="switchVisualTab(this, 'arch-0')">🏛️ Multi-Agent Architecture</button>
+                <button class="visual-tab" onclick="switchVisualTab(this, 'code-0')">💻 Asymmetric Memory Code</button>
+              </div>
+              <span class="brand-tag">Slide 1 Architecture</span>
+            </div>
+            
+            <div class="visual-tab-pane active" id="arch-0">
+              <div class="diagram-canvas">
+                <div class="arch-node-box">
+                  <div>
+                    <div class="arch-node-title">GameController (REST API)</div>
+                    <div class="arch-node-desc">Non-blocking HTTP endpoints (/api/game/start, /state, /logs)</div>
+                  </div>
+                  <span class="tech-tag">Spring Web MVC</span>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-node-box">
+                  <div>
+                    <div class="arch-node-title">GameSimulationRunner (Daemon Worker Thread)</div>
+                    <div class="arch-node-desc">Decoupled async simulation thread executing multi-agent turns</div>
+                  </div>
+                  <span class="tech-tag">Java 17 Thread</span>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="flow-grid-3">
+                  <div class="flow-card">
+                    <span class="flow-card-icon">👥</span>
+                    <div class="flow-card-title">CampLifePhase</div>
+                    <div class="flow-card-sub">Whispers & Memory Matrix</div>
+                  </div>
+                  <div class="flow-card">
+                    <span class="flow-card-icon">🏆</span>
+                    <div class="flow-card-title">ChallengePhase</div>
+                    <div class="flow-card-sub">Immunity Submissions</div>
+                  </div>
+                  <div class="flow-card">
+                    <span class="flow-card-icon">🔥</span>
+                    <div class="flow-card-title">TribalCouncilPhase</div>
+                    <div class="flow-card-sub">Deception & Eliminations</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="visual-tab-pane" id="code-0">
+              <div class="code-editor-window">
+<pre><code><span class="syn-cmnt">// Asymmetric Social Memory Record (PlayerRelation.java)</span>
+<span class="syn-kw">public class</span> <span class="syn-type">PlayerRelation</span> {
+    <span class="syn-kw">private final</span> <span class="syn-type">String</span> targetPlayerId;
+    <span class="syn-kw">private int</span> trustScore; <span class="syn-cmnt">// Dynamic 0 - 100 trust rating</span>
+    <span class="syn-kw">private</span> <span class="syn-type">AllianceStatus</span> allianceStatus; <span class="syn-cmnt">// NONE -> PROPOSED -> CONFIRMED -> BROKEN</span>
+    <span class="syn-kw">private final</span> <span class="syn-type">List</span>&lt;<span class="syn-type">String</span>&gt; privateNotes; <span class="syn-cmnt">// Asymmetric agent memory</span>
+
+    <span class="syn-kw">public void</span> <span class="syn-fn">updateTrust</span>(<span class="syn-kw">int</span> delta, <span class="syn-type">String</span> reason) {
+        <span class="syn-kw">this</span>.trustScore = Math.max(<span class="syn-num">0</span>, Math.min(<span class="syn-num">100</span>, <span class="syn-kw">this</span>.trustScore + delta));
+        <span class="syn-kw">this</span>.privateNotes.add(reason);
+    }
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-content-col">
+          <div class="slide-subtitle-badge">Slide 1 of 5 &bull; Core Architecture</div>
+          <h2 class="slide-title">Multi-Agent Engine & <span>Asymmetric Memory</span></h2>
+          
+          <div class="tech-tags-row">
+            <span class="tech-tag">Spring Boot 4</span>
+            <span class="tech-tag">Java 17 Worker Thread</span>
+            <span class="tech-tag">Thread-Safe GameContext</span>
+            <span class="tech-tag">Asymmetric Social Memory</span>
+          </div>
+
+          <ul class="captions-list">
+            <li class="caption-item">
+              <span class="caption-num">1</span>
+              <p class="caption-text"><strong>Thread-Safe In-Memory State:</strong> Managed by `GameContext.java` using concurrent datastructures to encapsulate player rosters, team assignments, and public/private event histories without database latency.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">2</span>
+              <p class="caption-text"><strong>Asymmetric Social Memory Matrix:</strong> Each agent independently tracks trust scores (0–100), private strategic observations, and asymmetric alliance lifecycle states (`NONE` &rarr; `PROPOSED` &rarr; `CONFIRMED` &rarr; `BROKEN`).</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">3</span>
+              <p class="caption-text"><strong>Decoupled Worker Thread:</strong> `GameSimulationRunner` runs simulation turns on a dedicated background worker thread, ensuring HTTP REST API responsiveness during intensive LLM reasoning cycles.</p>
+            </li>
+          </ul>
+
+          <div class="code-snippet-box">
+            <code>PlayerRelation <span class="highlight">trustScore (0-100)</span></code>
+            <span>Asymmetric Memory</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==================== SLIDE 2: MULTI-PROVIDER LLM ROUTER & FAULT TOLERANCE ==================== -->
+      <article class="slide-item" data-slide="1">
+        <div class="slide-visual-col">
+          <div class="visual-wrapper">
+            <div class="visual-header-tabs">
+              <div class="visual-tabs-group">
+                <button class="visual-tab active" onclick="switchVisualTab(this, 'llm-0')">🔀 Multi-Provider Router</button>
+                <button class="visual-tab" onclick="switchVisualTab(this, 'code-1')">💻 Backoff & Retry Code</button>
+              </div>
+              <span class="brand-tag">Slide 2 LLM Routing</span>
+            </div>
+
+            <div class="visual-tab-pane active" id="llm-0">
+              <div class="diagram-canvas">
+                <div class="arch-node-box">
+                  <div>
+                    <div class="arch-node-title">OpenRouterClient (openai-java SDK Wrapper)</div>
+                    <div class="arch-node-desc">Unified OpenAI-compatible request builder with rate pacing</div>
+                  </div>
+                  <span class="tech-tag">Rate Pacing 1.5s</span>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="flow-grid-3">
+                  <div class="flow-card">
+                    <span class="flow-card-icon">⚡</span>
+                    <div class="flow-card-title">Groq</div>
+                    <div class="flow-card-sub">Llama 3.3 70B Fast</div>
+                  </div>
+                  <div class="flow-card">
+                    <span class="flow-card-icon">✨</span>
+                    <div class="flow-card-title">Google Gemini</div>
+                    <div class="flow-card-sub">Gemini 2.5/3.6 Flash</div>
+                  </div>
+                  <div class="flow-card">
+                    <span class="flow-card-icon">💻</span>
+                    <div class="flow-card-title">Ollama</div>
+                    <div class="flow-card-sub">Local LLM Server</div>
+                  </div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-node-box">
+                  <div>
+                    <div class="arch-node-title">Deterministic Stat Fallback Engine</div>
+                    <div class="arch-node-desc">Triggers stat-driven fallback roll when LLM API times out</div>
+                  </div>
+                  <span class="tech-tag">Exponential Backoff</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="visual-tab-pane" id="code-1">
+              <div class="code-editor-window">
+<pre><code><span class="syn-cmnt">// Exponential Backoff & Retry Handler (OpenRouterClient.java)</span>
+<span class="syn-kw">public</span> <span class="syn-type">String</span> <span class="syn-fn">executeWithRetry</span>(<span class="syn-type">PromptMessage</span> prompt, <span class="syn-kw">int</span> maxRetries) {
+    <span class="syn-kw">long</span> backoffMs = <span class="syn-num">4000</span>; <span class="syn-cmnt">// Initial 4s delay</span>
+    <span class="syn-kw">for</span> (<span class="syn-kw">int</span> i = <span class="syn-num">0</span>; i &lt; maxRetries; i++) {
+        <span class="syn-kw">try</span> {
+            enforceRateLimitPacing(<span class="syn-num">1500</span>); <span class="syn-cmnt">// 1.5s inter-prompt delay</span>
+            <span class="syn-kw">return</span> openAiClient.chat().completions().create(buildParams(prompt));
+        } <span class="syn-kw">catch</span> (<span class="syn-type">OpenAiException</span> e) {
+            Thread.sleep(backoffMs);
+            backoffMs = Math.min(<span class="syn-num">64000</span>, backoffMs * <span class="syn-num">2</span>); <span class="syn-cmnt">// Exponential backoff capped at 64s</span>
+        }
+    }
+    <span class="syn-kw">return</span> fallbackStatEngine.generateDeterministicAction(prompt);
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-content-col">
+          <div class="slide-subtitle-badge">Slide 2 of 5 &bull; LLM Infrastructure</div>
+          <h2 class="slide-title">Multi-Provider Router & <span>Fault Tolerance</span></h2>
+          
+          <div class="tech-tags-row">
+            <span class="tech-tag">Official openai-java SDK</span>
+            <span class="tech-tag">Multi-Provider Router</span>
+            <span class="tech-tag">Exponential Backoff (4s &rarr; 64s)</span>
+            <span class="tech-tag">Deterministic Fallbacks</span>
+          </div>
+
+          <ul class="captions-list">
+            <li class="caption-item">
+              <span class="caption-num">1</span>
+              <p class="caption-text"><strong>Unified Multi-Provider SDK Integration:</strong> Built with the official `com.openai:openai-java` SDK to route completions seamlessly across Groq, Gemini, Cerebras, and local Ollama instances.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">2</span>
+              <p class="caption-text"><strong>Resilient Rate Pacing & Exponential Backoff:</strong> Implements 1.5s inter-prompt rate pacing to stay within API rate limits, backed by exponential backoff retries scaling from 4s up to 64s.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">3</span>
+              <p class="caption-text"><strong>Jackson JSON Validation & Stat Fallbacks:</strong> Employs robust Jackson JSON parsing for agent structured outputs with deterministic stat-based fallback actions if API timeouts occur.</p>
+            </li>
+          </ul>
+
+          <div class="code-snippet-box">
+            <code>backoffMs = Math.min(64000, <span class="highlight">backoffMs * 2</span>)</code>
+            <span>Fault-Tolerant Retries</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==================== SLIDE 3: PROBABILISTIC DECEPTION & JURY THREAT ENGINE ==================== -->
+      <article class="slide-item" data-slide="2">
+        <div class="slide-visual-col">
+          <div class="visual-wrapper">
+            <div class="visual-header-tabs">
+              <div class="visual-tabs-group">
+                <button class="visual-tab active" onclick="switchVisualTab(this, 'social-0')">📊 Deception & Threat Flow</button>
+                <button class="visual-tab" onclick="switchVisualTab(this, 'code-2')">💻 Jury Threat Code</button>
+              </div>
+              <span class="brand-tag">Slide 3 Agent Intelligence</span>
+            </div>
+
+            <div class="visual-tab-pane active" id="social-0">
+              <div class="diagram-canvas">
+                <div class="arch-node-box">
+                  <div>
+                    <div class="arch-node-title">Lie Detection Roll Engine</div>
+                    <div class="arch-node-desc">Lie Probe = (100 - Sender.Trustworthiness) + Sender.Assertiveness</div>
+                  </div>
+                  <span class="tech-tag">Stat Mechanics</span>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-node-box">
+                  <div>
+                    <div class="arch-node-title">Asymmetric Secret Whispers</div>
+                    <div class="arch-node-desc">Private 1-on-1 dialogue with trust score mutations (+/- 15)</div>
+                  </div>
+                  <span class="tech-tag">Camp Life Phase</span>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-node-box">
+                  <div>
+                    <div class="arch-node-title">Endgame Jury Threat Win Matrix (&le; 5 Active Players)</div>
+                    <div class="arch-node-desc">High Social Intelligence agents target jury favorites before final 2</div>
+                  </div>
+                  <span class="tech-tag">Tribal Council</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="visual-tab-pane" id="code-2">
+              <div class="code-editor-window">
+<pre><code><span class="syn-cmnt">// Endgame Jury Threat Cut Strategy (TribalCouncilPhase.java)</span>
+<span class="syn-kw">public</span> <span class="syn-type">Player</span> <span class="syn-fn">selectJuryThreatTarget</span>(<span class="syn-type">Player</span> voter, <span class="syn-type">List</span>&lt;<span class="syn-type">Player</span>&gt; activeContestants) {
+    <span class="syn-kw">if</span> (activeContestants.size() &gt; <span class="syn-num">5</span> || voter.getSocialIntelligence() &lt; <span class="syn-num">70</span>) {
+        <span class="syn-kw">return</span> selectStandardRivalTarget(voter, activeContestants);
+    }
+    
+    <span class="syn-cmnt">// Calculate projected jury win probabilities</span>
+    <span class="syn-kw">return</span> activeContestants.stream()
+        .filter(p -&gt; !p.getId().equals(voter.getId()))
+        .max(Comparator.comparingDouble(p -&gt; calculateJuryWinProbability(p, gameContext)))
+        .orElse(null);
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-content-col">
+          <div class="slide-subtitle-badge">Slide 3 of 5 &bull; Agent Intelligence</div>
+          <h2 class="slide-title">Probabilistic Deception & <span>Jury Threat</span></h2>
+          
+          <div class="tech-tags-row">
+            <span class="tech-tag">Stat-Driven Mechanics</span>
+            <span class="tech-tag">Lie Detection Roll</span>
+            <span class="tech-tag">Jury Threat Win Matrix</span>
+            <span class="tech-tag">Asymmetric Whispers</span>
+          </div>
+
+          <ul class="captions-list">
+            <li class="caption-item">
+              <span class="caption-num">1</span>
+              <p class="caption-text"><strong>Probabilistic Lie Detection Mechanics:</strong> Secret whispers evaluate honest vs. deceptive messaging, with lie detection success derived from `(100 - Sender.Trustworthiness) + Sender.Assertiveness`.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">2</span>
+              <p class="caption-text"><strong>Endgame Jury Threat Strategy:</strong> When remaining players reach &le; 5, agents with high `Social Intelligence` compute jury win probabilities to betray confirmed allies who represent major jury threats.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">3</span>
+              <p class="caption-text"><strong>Archetype-Driven Decisions:</strong> Core stats (`Trustworthiness`, `Emotional Stability`, `Social Intelligence`, `Assertiveness`) constrain LLM prompts to enforce distinct behavior profiles.</p>
+            </li>
+          </ul>
+
+          <div class="code-snippet-box">
+            <code>calculateJuryWinProbability <span class="highlight">(&le; 5 Active)</span></code>
+            <span>Endgame Threat Cut</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==================== SLIDE 4: HOST PERSONA ENGINE & PHASE ORCHESTRATION ==================== -->
+      <article class="slide-item" data-slide="3">
+        <div class="slide-visual-col">
+          <div class="visual-wrapper">
+            <div class="visual-header-tabs">
+              <div class="visual-tabs-group">
+                <button class="visual-tab active" onclick="switchVisualTab(this, 'host-0')">🔄 Phase State Machine</button>
+                <button class="visual-tab" onclick="switchVisualTab(this, 'code-3')">💻 Host Prompt Builder Code</button>
+              </div>
+              <span class="brand-tag">Slide 4 Game Orchestrator</span>
+            </div>
+
+            <div class="visual-tab-pane active" id="host-0">
+              <div class="diagram-canvas">
+                <div class="flow-grid-3">
+                  <div class="flow-card">
+                    <span class="flow-card-icon">1️⃣</span>
+                    <div class="flow-card-title">Draft Phase</div>
+                    <div class="flow-card-sub">Captains pick teams based on stats</div>
+                  </div>
+                  <div class="flow-card">
+                    <span class="flow-card-icon">2️⃣</span>
+                    <div class="flow-card-title">Camp Life</div>
+                    <div class="flow-card-sub">Private 1-on-1 secret whispers</div>
+                  </div>
+                  <div class="flow-card">
+                    <span class="flow-card-icon">3️⃣</span>
+                    <div class="flow-card-title">Immunity Challenge</div>
+                    <div class="flow-card-sub">Host invents challenge theme</div>
+                  </div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="flow-grid-3">
+                  <div class="flow-card">
+                    <span class="flow-card-icon">4️⃣</span>
+                    <div class="flow-card-title">Tribal Council</div>
+                    <div class="flow-card-sub">Secret voting & eliminations</div>
+                  </div>
+                  <div class="flow-card">
+                    <span class="flow-card-icon">⚡</span>
+                    <div class="flow-card-title">Merge & Twists</div>
+                    <div class="flow-card-sub">Tribe merge @ 70% & tiebreakers</div>
+                  </div>
+                  <div class="flow-card">
+                    <span class="flow-card-icon">♛</span>
+                    <div class="flow-card-title">Jury Finale</div>
+                    <div class="flow-card-sub">Eliminated jury votes winner</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="visual-tab-pane" id="code-3">
+              <div class="code-editor-window">
+<pre><code><span class="syn-cmnt">// Dynamic Host System Prompt Builder (HostSystemPromptBuilder.java)</span>
+<span class="syn-kw">public</span> <span class="syn-type">String</span> <span class="syn-fn">buildHostChallengePrompt</span>(<span class="syn-type">ChallengeTheme</span> theme, <span class="syn-type">GameContext</span> context) {
+    <span class="syn-kw">return</span> <span class="syn-str">"""
+        You are Jeff, the dramatic Showman Host of AI Outlast.
+        Current Round: %d | Active Tribe Count: %d
+        Invent a themed physical/mental challenge for theme: %s.
+        Evaluate tribe submissions based on total team grit and intelligence stats.
+        Provide dramatic commentary and announce the winning tribe with immunity!
+        """</span>.formatted(context.getRound(), context.getTribes().size(), theme);
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-content-col">
+          <div class="slide-subtitle-badge">Slide 4 of 5 &bull; Game Orchestrator</div>
+          <h2 class="slide-title">Host Persona Engine & <span>Phase Lifecycle</span></h2>
+          
+          <div class="tech-tags-row">
+            <span class="tech-tag">Host LLM Persona</span>
+            <span class="tech-tag">Dynamic Challenge Generator</span>
+            <span class="tech-tag">Fire-Making Tiebreakers</span>
+            <span class="tech-tag">Multi-Phase State Machine</span>
+          </div>
+
+          <ul class="captions-list">
+            <li class="caption-item">
+              <span class="caption-num">1</span>
+              <p class="caption-text"><strong>"Dramatic Showman" Host Persona:</strong> The Host operates as an autonomous LLM agent (`HostAgent.java`) that invents challenges, evaluates strategies, and narrates eliminations.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">2</span>
+              <p class="caption-text"><strong>5-Phase State Machine:</strong> Guides the simulation lifecycle cleanly through Draft &rarr; Camp Life &rarr; Immunity Challenges &rarr; Tribal Council &rarr; Jury Finale.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">3</span>
+              <p class="caption-text"><strong>Dynamic Twists & Tiebreakers:</strong> Handles automatic tribe merging when remaining cast drops to 70%, double eliminations, and fire-making tiebreaker challenges.</p>
+            </li>
+          </ul>
+
+          <div class="code-snippet-box">
+            <code>HostAgent <span class="highlight">inventChallenge(theme)</span></code>
+            <span>Autonomous Host Agent</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ==================== SLIDE 5: REAL-TIME LOG POLLING & DASHBOARD INTEGRATION ==================== -->
+      <article class="slide-item" data-slide="4">
+        <div class="slide-visual-col">
+          <div class="visual-wrapper">
+            <div class="visual-header-tabs">
+              <div class="visual-tabs-group">
+                <button class="visual-tab active" onclick="switchVisualTab(this, 'ui-0')">📡 REST API & Event Flow</button>
+                <button class="visual-tab" onclick="switchVisualTab(this, 'code-4')">💻 Log Service Code</button>
+              </div>
+              <span class="brand-tag">Slide 5 Real-Time UX</span>
+            </div>
+
+            <div class="visual-tab-pane active" id="ui-0">
+              <div class="diagram-canvas">
+                <div class="arch-node-box">
+                  <div>
+                    <div class="arch-node-title">Vanilla JS Control Dashboard (Outlast-Frontend)</div>
+                    <div class="arch-node-desc">Polls GET /api/game/logs?from=N every 1.5s (Zero Node Build)</div>
+                  </div>
+                  <span class="tech-tag">HTML5 / CSS3 / JS</span>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-node-box">
+                  <div>
+                    <div class="arch-node-title">GameLogService (Circular Log Buffer)</div>
+                    <div class="arch-node-desc">Index-based log slice fetching (returns lines emitted after index N)</div>
+                  </div>
+                  <span class="tech-tag">Low Bandwidth</span>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="flow-grid-3">
+                  <div class="flow-card">
+                    <span class="flow-card-icon">📺</span>
+                    <div class="flow-card-title">Live Feed</div>
+                    <div class="flow-card-sub">Real-time drama render</div>
+                  </div>
+                  <div class="flow-card">
+                    <span class="flow-card-icon">⏯️</span>
+                    <div class="flow-card-title">Step Mode</div>
+                    <div class="flow-card-sub">Pause between scenes</div>
+                  </div>
+                  <div class="flow-card">
+                    <span class="flow-card-icon">🛠️</span>
+                    <div class="flow-card-title">Tech Drawer</div>
+                    <div class="flow-card-sub">Raw JSON debug log</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="visual-tab-pane" id="code-4">
+              <div class="code-editor-window">
+<pre><code><span class="syn-cmnt">// Index-Based Delta Log Streamer (GameLogService.java)</span>
+<span class="syn-kw">public class</span> <span class="syn-type">GameLogService</span> {
+    <span class="syn-kw">private final</span> <span class="syn-type">List</span>&lt;<span class="syn-type">String</span>&gt; logBuffer = <span class="syn-kw">new</span> <span class="syn-type">CopyOnWriteArrayList</span>&lt;&gt;();
+
+    <span class="syn-kw">public void</span> <span class="syn-fn">log</span>(<span class="syn-type">String</span> line) {
+        logBuffer.add(line);
+    }
+
+    <span class="syn-kw">public</span> <span class="syn-type">LogSlice</span> <span class="syn-fn">getLogsFrom</span>(<span class="syn-kw">int</span> fromIndex) {
+        <span class="syn-kw">int</span> total = logBuffer.size();
+        <span class="syn-kw">int</span> safeFrom = Math.max(<span class="syn-num">0</span>, Math.min(fromIndex, total));
+        <span class="syn-type">List</span>&lt;<span class="syn-type">String</span>&gt; lines = logBuffer.subList(safeFrom, total);
+        <span class="syn-kw">return new</span> <span class="syn-type">LogSlice</span>(lines, total);
+    }
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-content-col">
+          <div class="slide-subtitle-badge">Slide 5 of 5 &bull; Real-Time UX & DevOps</div>
+          <h2 class="slide-title">Real-Time Delta Polling & <span>Control Dashboard</span></h2>
+          
+          <div class="tech-tags-row">
+            <span class="tech-tag">REST API Delta Polling</span>
+            <span class="tech-tag">Indexed Log Slice Buffer</span>
+            <span class="tech-tag">Step-by-Step Pacing</span>
+            <span class="tech-tag">Zero-Build Control Dashboard</span>
+          </div>
+
+          <ul class="captions-list">
+            <li class="caption-item">
+              <span class="caption-num">1</span>
+              <p class="caption-text"><strong>Efficient Delta Log Polling (`/api/game/logs?from=N`):</strong> `GameLogService.java` streams only new log lines emitted since log index `N`, minimizing HTTP payload overhead.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">2</span>
+              <p class="caption-text"><strong>Step-by-Step Scene Pacing:</strong> Allows spectators to pause between scenes and manually advance the game via `/api/game/next`, mimicking TV episode releases.</p>
+            </li>
+            <li class="caption-item">
+              <span class="caption-num">3</span>
+              <p class="caption-text"><strong>Zero-Build Control Room UI:</strong> Built with clean HTML5, CSS3, and Vanilla JS in `Outlast-Frontend/`, displaying live tribe boards, dynamic contestant profile cards, and tech debug drawers.</p>
+            </li>
+          </ul>
+
+          <div class="code-snippet-box">
+            <code>GET /api/game/logs?<span class="highlight">from=N</span></code>
+            <span>Delta Log Stream</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Sticky Controls Bar Footer -->
+    <footer class="deck-controls-bar">
+      <div class="controls-left">
+        <button class="ctrl-btn ctrl-btn-play" id="playPauseBtn" aria-label="Play or Pause Auto-Play" title="Toggle Auto-Play Demo">
+          <span id="playIcon">▶</span>
+          <span id="playText">Auto Play</span>
+        </button>
+        <div class="slide-counter" id="slideCounter">Slide 1 of 5</div>
+      </div>
+
+      <div class="controls-center">
+        <button class="ctrl-btn" id="prevBtn" aria-label="Previous Slide" title="Previous Slide">&larr; Prev</button>
+        <div class="dots-indicator" id="dotsIndicator">
+          <span class="dot active" data-index="0"></span>
+          <span class="dot" data-index="1"></span>
+          <span class="dot" data-index="2"></span>
+          <span class="dot" data-index="3"></span>
+          <span class="dot" data-index="4"></span>
+        </div>
+        <button class="ctrl-btn" id="nextBtn" aria-label="Next Slide" title="Next Slide">Next &rarr;</button>
+      </div>
+
+      <div class="controls-right">
+        <span class="key-hint">Keys: &larr; / &rarr; / Space</span>
+        <button class="ctrl-btn" id="fullscreenBtn" aria-label="Fullscreen" title="Toggle Fullscreen">⛶ Fullscreen</button>
+      </div>
+    </footer>
+  </main>
+
+  <script src="deck.js"></script>
+</body>
+</html>

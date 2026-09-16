@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopSphere - My Orders</title>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/modals.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="css/products.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .orders-container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+    .order-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      margin-bottom: 1rem;
+    }
+    .btn-cancel-order:hover {
+      background: #fecaca !important;
+    }
+    .order-id {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #0f172a;
+    }
+    .order-date {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .status-placed { background: #dbeafe; color: #1e40af; }
+    .status-processing { background: #fef3c7; color: #92400e; }
+    .status-shipped { background: #e0e7ff; color: #3730a3; }
+    .status-delivered { background: #d1fae5; color: #065f46; }
+    .status-cancelled { background: #fee2e2; color: #991b1b; }
+    
+    .order-items-list {
+      margin-bottom: 1rem;
+    }
+    .order-item-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      padding: 0.4rem 0;
+      color: #334155;
+    }
+    .order-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid #f1f5f9;
+    }
+    .total-price {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #10b981;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar"></header>
+
+  <main class="orders-container">
+    <h1 style="margin-bottom: 0.5rem;">My Orders</h1>
+    <p style="color: #64748b; margin-bottom: 2rem;">Track your recent purchases, order status, and item details.</p>
+
+    <div id="ordersList">
+      <p style="color: #94a3b8; text-align: center; padding: 3rem;">Loading your orders...</p>
+    </div>
+  </main>
+
+  <script src="js/common.js"></script>
+  <script src="js/orders.js"></script>
+</body>
+</html>

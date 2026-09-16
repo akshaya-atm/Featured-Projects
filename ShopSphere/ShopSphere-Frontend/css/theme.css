@@ -1,0 +1,311 @@
+:root {
+  --primary: #84cc16;
+  --primary-hover: #65a30d;
+  --primary-dark: #15803d;
+  
+  --accent-gold: #f59e0b;
+  --accent-gold-hover: #d97706;
+  --accent-red: #ef4444;
+  --accent-green: #10b981;
+
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-subtle: #f1f5f9;
+
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+
+  --font-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.78rem);
+  --font-sm: clamp(0.78rem, 0.72rem + 0.3vw, 0.88rem);
+  --font-base: clamp(0.88rem, 0.82rem + 0.35vw, 1rem);
+  --font-lg: clamp(1rem, 0.92rem + 0.4vw, 1.25rem);
+  --font-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
+  --font-2xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.5rem);
+
+  --border-color: #e2e8f0;
+  --border-active: var(--primary);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 10px 20px -3px rgba(132, 204, 22, 0.15);
+  --shadow-lg: 0 20px 30px -5px rgba(0, 0, 0, 0.08);
+}
+
+/* No box-sizing reset existed anywhere in this app -- every element defaulted to the browser's
+   content-box model, under which a declared `width` covers content only and padding/border are
+   added ON TOP of it. .form-control (used by every input/select/textarea across the whole site --
+   25+ places, not just the admin modals) sets width: 100% plus ~0.85rem horizontal padding plus a
+   1px border per side, so its actual rendered width was ~100% + 18px. Inside a two-column
+   .form-row grid with only a 16px gap between columns, that 18px overflow is bigger than the gap
+   itself, so the left input's right edge visibly ran past the column boundary and into the right
+   input -- the "input boxes overlapping" bug. border-box makes width: 100% actually mean 100%,
+   padding and border included, which is what every one of these components already assumed. */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.15rem 2.5rem;
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.brand-link, .nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--primary-hover);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.nav-link {
+  font-size: var(--font-base);
+  font-weight: 700;
+  color: var(--text-main);
+  text-decoration: none;
+  padding: 0.55rem 1.2rem;
+  border-radius: var(--radius-pill);
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary-hover);
+  background: #f7fee7;
+}
+
+.nav-link-highlight {
+  background: var(--primary);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(132, 204, 22, 0.35);
+}
+
+.nav-link-highlight:hover {
+  background: var(--primary-hover);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-base);
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(132, 204, 22, 0.35);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+/* Modal Overlay Base — shared open/close mechanics for every modal, popup, and drawer in the app.
+   The padding here matters: without it, a modal card sized close to the viewport (short window,
+   browser zoomed in) touches the screen edges with nowhere for its own scrollbar to sit. */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(1px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.2s ease, visibility 0s linear 0s;
+}
+
+/* Login Modal Popup */
+.login-modal-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: center;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Cart Drawer Slide-out — docks right instead of the default centered layout */
+.cart-drawer-overlay {
+  justify-content: flex-end;
+}
+
+.cart-drawer-panel {
+  background: #ffffff;
+  width: 100%;
+  max-width: 450px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 25px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.cart-drawer-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-subtle);
+}
+
+.cart-drawer-body {
+  padding: 1.5rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.cart-drawer-footer {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-subtle);
+}
+
+.btn-checkout {
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--accent-green);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-base);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-checkout:hover {
+  background: #059669;
+}
+
+/* Password Input Wrapper with Show/Hide Toggle Button */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 2.75rem !important;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #64748b;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  user-select: none;
+}
+
+.toggle-password-btn:hover {
+  color: #10b981;
+}
+
+/* Small-viewport pass: below this width a fixed-max-width side panel (cart drawer, login card)
+   either overflows a phone screen or leaves a cramped sliver next to a dark backdrop -- these
+   should behave like their own full-screen page instead of a floating card/drawer. Same
+   breakpoint is reused in chatbot.css for the assistant drawer/FAB so all of these agree on
+   where "mobile" starts. */
+@media (max-width: 640px) {
+  .navbar {
+    padding: 0.85rem 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .modal-overlay {
+    padding: 0;
+  }
+
+  .login-modal-card {
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .cart-drawer-panel {
+    max-width: 100%;
+    border-radius: 0;
+  }
+}

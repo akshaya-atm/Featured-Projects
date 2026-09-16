@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ShopSphere AI Presentation</title>
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <!-- Theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.min.css">
+    
+    <style>
+        .reveal h1, .reveal h2, .reveal h3 {
+            color: #4CAF50; /* A modern green to fit the grocery theme */
+            text-transform: none;
+        }
+        .reveal ul {
+            font-size: 0.8em;
+            line-height: 1.5;
+        }
+        .reveal .slides section {
+            text-align: left;
+        }
+        .reveal .slides section.center {
+            text-align: center;
+        }
+        .highlight {
+            color: #2196F3;
+        }
+        .presentation-img {
+            max-height: 450px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1 -->
+            <section class="center">
+                <h1>ShopSphere</h1>
+                <h3>Transforming E-Commerce with Agentic AI</h3>
+                <p>An autonomous shopping assistant powered by Gemini & Java</p>
+                <p><small>Press <em>Space</em> or <em>Arrow Keys</em> to navigate</small></p>
+            </section>
+
+            <!-- Slide 2 -->
+            <section>
+                <h2>The Problem</h2>
+                <p class="highlight">The Friction in Traditional E-Commerce</p>
+                <ul>
+                    <li><strong>Rigid Navigation:</strong> Users must manually filter, search, and click through multiple pages.</li>
+                    <li><strong>Lack of Personalization:</strong> Static search bars cannot answer contextual questions like <em>"What ingredients do I need for a salad for 3 people?"</em></li>
+                    <li><strong>High Cart Abandonment:</strong> The longer it takes to find and add items, the higher the drop-off rate.</li>
+                </ul>
+                <aside class="notes">
+                    Talking point: "I wanted to build a platform where shopping feels as natural as texting a store clerk."
+                </aside>
+            </section>
+
+            <!-- Slide 3 -->
+            <section>
+                <h2>The Solution</h2>
+                <p class="highlight">AI-Driven Conversational Shopping</p>
+                <ul>
+                    <li><strong>Conversational Interface:</strong> A persistent, slide-out chat drawer accessible from anywhere.</li>
+                    <li><strong>Agentic Capability:</strong> The AI actively manages the cart, checks inventory, and places orders on behalf of the user.</li>
+                    <li><strong>Context-Aware:</strong> Remembers session history and user preferences natively.</li>
+                </ul>
+                <!-- We leave a placeholder for the user's video here -->
+                <div style="text-align:center; padding:20px; border: 2px dashed #4CAF50; color:#4CAF50; margin-top:20px;">
+                    [ Insert Video Demonstration Here ]
+                </div>
+            </section>
+
+            <!-- Slide 4 -->
+            <section>
+                <h2>Intelligent Cart Management</h2>
+                <p class="highlight">Bridging Natural Language and Databases</p>
+                <ul>
+                    <li><strong>Dynamic Tool Calling:</strong> The assistant uses backend Java `@Tool` methods to read the database and mutate state autonomously.</li>
+                    <li><strong>Semantic Understanding:</strong> The AI can reason about complex quantities (e.g., automatically adding 3 of each item when asked to prepare for 3 people).</li>
+                    <li><strong>Real-time Sync:</strong> Backend cart modifications instantly trigger UI re-renders without full page refreshes.</li>
+                </ul>
+                <img class="presentation-img" src="/Users/akshayaatm/.gemini/antigravity/brain/fddd4d11-decc-4c4a-b976-ad85b8924ed0/.user_uploaded/media_1789538826740.png" alt="Cart Sync" />
+            </section>
+
+            <!-- Slide 5 -->
+            <section>
+                <h2>Security & Guardrails</h2>
+                <p class="highlight">Taming the LLM in the Backend</p>
+                <ul>
+                    <li><strong>Enforced Confirmations:</strong> Irreversible actions (`placeOrder`) are protected by a backend Java interceptor that forces the AI to stop, present a summary, and wait for a human "Yes".</li>
+                    <li><strong>Boundary Control:</strong> Strict System Prompts prevent the AI from answering off-topic questions (e.g., programming or general knowledge) to avoid prompt injection.</li>
+                    <li><strong>Data Privacy:</strong> Internal database IDs are strictly hidden from the user.</li>
+                </ul>
+            </section>
+            
+            <!-- Slide 5 (Continued) -->
+            <section>
+                <h2>Security Guardrails in Action</h2>
+                <p>The AI refusing off-topic requests and forcing human confirmation:</p>
+                <img class="presentation-img" src="/Users/akshayaatm/.gemini/antigravity/brain/fddd4d11-decc-4c4a-b976-ad85b8924ed0/.user_uploaded/media_1789538834710.png" alt="Guardrails" />
+            </section>
+
+            <!-- Slide 6 -->
+            <section>
+                <h2>Technical Architecture</h2>
+                <ul>
+                    <li><strong>Backend:</strong> Java Servlets deployed on Apache Tomcat (built from the ground up for deep understanding of HTTP and state).</li>
+                    <li><strong>AI Orchestration:</strong> LangChain4j bridging the Java backend with the Google Gemini API.</li>
+                    <li><strong>Database:</strong> PostgreSQL with schema versioning via Flyway.</li>
+                    <li><strong>Frontend:</strong> Vanilla JavaScript and HTML5 with dynamic DOM manipulation (zero-dependency approach for maximum performance).</li>
+                </ul>
+            </section>
+
+            <!-- Slide 7 -->
+            <section>
+                <h2>Overcoming Hurdles</h2>
+                <ul>
+                    <li><strong>API Rate Limits:</strong> Navigated strict LLM rate limits by optimizing token usage and switching models.</li>
+                    <li><strong>Sequence Errors:</strong> Solved complex `ChatMemory` eviction bugs that broke Gemini's strict <em>User -> Model -> Tool</em> turn sequence.</li>
+                    <li><strong>The "Agentic Loop":</strong> Forced the model to pause its execution loop to ask for human permission by shifting validation logic from the LLM prompt to hard-coded Java constraints.</li>
+                </ul>
+            </section>
+
+            <!-- Slide 8 -->
+            <section class="center">
+                <h2>Future Roadmap</h2>
+                <ul style="display:inline-block; text-align:left;">
+                    <li>Integration of a real payment gateway (Stripe) via chat links.</li>
+                    <li>Voice-to-text integration for hands-free shopping.</li>
+                    <li>RAG (Retrieval-Augmented Generation) for querying thousands of product reviews.</li>
+                </ul>
+                <h3 style="margin-top: 50px;">Thank You!</h3>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: true,
+            transition: 'slide' // none/fade/slide/convex/concave/zoom
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+# ==========================================================================
+   Featured Projects Monorepo — Git Ignore Specification
+   ==========================================================================
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE & Editor Configuration
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.claude/
+.smarttomcat/
+
+# Java & Build Output
+bin/
+out/
+target/
+**/target/
+**/bin/
+**/out/
+*.class
+*.jar
+*.war
+*.log
+*.zip
+
+# Temporary Backup Directories
+.outlast-*-backup-*
+scratch/
