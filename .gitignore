@@ -36,3 +36,28 @@ target/
 # Temporary Backup Directories
 .outlast-*-backup-*
 scratch/
+
+# Employee Leave Management System (Environment & Build)
+.env
+.env.*
+!.env.example
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# Spring Tool Suite (STS)
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# NetBeans / Builds
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+build/

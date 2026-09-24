@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="720" height="420" font-family="Inter,system-ui,sans-serif">
+  <defs>
+    <pattern id="dot-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1.5" fill="#8180ff" opacity="0.12"/>
+    </pattern>
+  </defs>
+  
+  <rect width="720" height="420" fill="#0d1322" rx="12"/>
+  <rect width="720" height="420" fill="url(#dot-grid)" rx="12"/>
+  <rect width="720" height="420" fill="none" stroke="#1e2540" stroke-width="2" rx="12"/>
+
+  <!-- Top Title -->
+  <rect x="250" y="30" width="220" height="40" rx="8" fill="#1e2540" stroke="#334155" stroke-width="1.5"/>
+  <text x="360" y="55" fill="#f8fafc" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">PROJECT ROADMAP</text>
+
+  <!-- Left Column: Delivered -->
+  <rect x="40" y="90" width="310" height="190" rx="10" fill="#0b0f19" stroke="#22c55e" stroke-width="1.5" stroke-opacity="0.6"/>
+  <rect x="40" y="90" width="310" height="46" rx="10" fill="rgba(34, 197, 94, 0.1)"/>
+  <rect x="40" y="126" width="310" height="10" fill="rgba(34, 197, 94, 0.1)"/> <!-- square bottom -->
+  <text x="195" y="118" fill="#22c55e" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">V1 DELIVERED</text>
+  
+  <text x="70" y="165" fill="#f8fafc" font-size="13">✓ Native @Tool definitions</text>
+  <text x="70" y="195" fill="#f8fafc" font-size="13">✓ MCP interoperability</text>
+  <text x="70" y="225" fill="#f8fafc" font-size="13">✓ Transactional domain layer</text>
+  <text x="70" y="255" fill="#f8fafc" font-size="13">✓ RAG policy grounding</text>
+
+  <!-- Right Column: Next Sprint -->
+  <rect x="370" y="90" width="310" height="190" rx="10" fill="#0b0f19" stroke="#8180ff" stroke-width="1.5" stroke-opacity="0.6"/>
+  <rect x="370" y="90" width="310" height="46" rx="10" fill="rgba(129, 128, 255, 0.1)"/>
+  <rect x="370" y="126" width="310" height="10" fill="rgba(129, 128, 255, 0.1)"/>
+  <text x="525" y="118" fill="#8180ff" font-size="14" font-weight="700" text-anchor="middle" letter-spacing="1">NEXT SPRINT</text>
+  
+  <text x="400" y="165" fill="#f8fafc" font-size="13">1. Formal DB concurrency tests</text>
+  <text x="400" y="195" fill="#f8fafc" font-size="13">2. RAG precision evaluation</text>
+  <text x="400" y="225" fill="#f8fafc" font-size="13">3. Mutation confirmation tokens</text>
+  <text x="400" y="255" fill="#f8fafc" font-size="13">4. Entitlement accrual engine</text>
+
+  <!-- Bottom: Known Boundaries -->
+  <rect x="40" y="300" width="640" height="90" rx="10" fill="#121826" stroke="#eab308" stroke-width="1.5" stroke-dasharray="6 4" stroke-opacity="0.7"/>
+  <rect x="40" y="300" width="640" height="30" rx="10" fill="rgba(234, 179, 8, 0.05)"/>
+  <text x="360" y="320" fill="#eab308" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="1">⚠️ KNOWN BOUNDARIES</text>
+  
+  <text x="360" y="348" fill="#a8b5ca" font-size="12" text-anchor="middle">- Automated tests exist; DB concurrency and RAG evaluation remain -</text>
+  <text x="360" y="370" fill="#a8b5ca" font-size="12" text-anchor="middle">- Similarity threshold (0.65) has not been formally tuned -</text>
+
+</svg>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="View your employee details and manage leave through the Employee Leave Assistant."
+    />
+    <title>Employee Leave Assistant</title>
+    <link rel = "stylesheet"  href="./src/styles/theme.css"/>
+    <link rel="stylesheet" href="./src/styles/main.css" />
+    <link
+      rel="stylesheet"
+      href="./src/styles/employee-summary.css"
+    />
+    <link
+      rel="stylesheet"
+      href="./src/styles/chat-assistant.css"
+    />
+    <link rel="stylesheet" href="./src/styles/login.css" />
+    <script type="module" src="./src/app.js"></script>
+  </head>
+  <body class="dashboard-page">
+    <header class="title-bar">
+      <div class="title-bar__content">
+        <h1>Employee Leave Assistant</h1>
+        <div class="title-bar__actions">
+          <div id="company-name">ABC Corp</div>
+          <button id="logout-button" type="button" hidden>Logout</button>
+        </div>
+      </div>
+    </header>
+    <section id="session-screen" class="session-screen" aria-labelledby="session-title" aria-busy="true">
+      <h2 id="session-title">Your session</h2>
+      <p id="session-message" role="status" aria-live="polite">Loading your session…</p>
+      <button id="session-retry" type="button" hidden>Retry</button>
+    </section>
+
+    <main id="login-screen" class="login-page" hidden>
+      <section class="login-card" aria-labelledby="login-title">
+        <h2 id="login-title">Login</h2>
+        <p class="login-card__description">
+          Enter your employee credentials to continue.
+        </p>
+
+        <form id="login-form">
+          <div class="form-field">
+            <label for="employee-id-input">Employee ID</label>
+            <input
+              id="employee-id-input"
+              name="employeeId"
+              type="text"
+              autocomplete="username"
+              required
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="password-input">Password</label>
+            <input
+              id="password-input"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+
+          <p id="login-error" class="login-form__error" role="alert" hidden></p>
+
+          <button class="login-form__submit" type="submit">Login</button>
+        </form>
+      </section>
+    </main>
+
+    <main id="app" hidden>
+        <section class="employee-summary" aria-labelledby="employee-summary-title">
+            <h2 id="employee-summary-title">Employee Summary</h2>
+            <dl class="employee-details">
+                <div class="employee-details__field">
+                    <dt>Name</dt>
+                    <dd id="employee-name">—</dd>
+                </div>
+                <div class="employee-details__field">
+                    <dt>Employee ID</dt>
+                    <dd id="employee-id">—</dd>
+                </div>
+                <div class="employee-details__field">
+                    <dt>Designation</dt>
+                    <dd id="employee-designation">—</dd>
+                </div>
+                <div class="employee-details__field">
+                    <dt>Department</dt>
+                    <dd id="employee-department">—</dd>
+                </div>
+                <div class="employee-details__field">
+                    <dt>Reporting Manager</dt>
+                    <dd id="employee-manager">—</dd>
+                </div>
+
+            </dl>
+
+            <div class="employee-summary__panels">
+              <section class="leave-balance" aria-labelledby="leave-balance-title">
+                <h3 id="leave-balance-title">Leave Balance</h3>
+
+                <dl class="leave-balance__list">
+                  <div class="leave-balance__item">
+                    <dt>Annual Leave</dt>
+                    <dd id="annual-leave-balance">—</dd>
+                  </div>
+                  <div class="leave-balance__item">
+                    <dt>Casual Leave</dt>
+                    <dd id="casual-leave-balance">—</dd>
+                  </div>
+                  <div class="leave-balance__item">
+                    <dt>Sick Leave</dt>
+                    <dd id="sick-leave-balance">—</dd>
+                  </div>
+                </dl>
+              </section>
+
+              <section
+                class="request-overview"
+                aria-labelledby="my-requests-title"
+              >
+                <h3 id="my-requests-title">My Leave Requests</h3>
+                <ul
+                  id="my-leave-requests"
+                  class="request-overview__list"
+                  aria-label="Recent leave requests"
+                ></ul>
+                <p id="my-requests-empty" class="request-overview__empty">
+                  No recent leave requests.
+                </p>
+                <p
+                  id="my-requests-status"
+                  class="request-overview__status"
+                  role="status"
+                  aria-live="polite"
+                  hidden
+                ></p>
+
+                <section
+                  id="pending-requests"
+                  class="pending-requests"
+                  aria-labelledby="pending-requests-title"
+                  hidden
+                >
+                  <h3 id="pending-requests-title">Team Approvals</h3>
+                  <p>
+                    Awaiting review:
+                    <strong id="pending-request-count">—</strong>
+                  </p>
+                  <button id="team-requests-reload" type="button">Refresh requests</button>
+                  <p id="team-requests-status" role="status" aria-live="polite" hidden></p>
+                  <p id="team-requests-empty" hidden>No pending team requests.</p>
+                  <ul id="team-leave-requests" class="request-overview__list" aria-label="Pending team leave requests"></ul>
+                </section>
+              </section>
+            </div>
+
+            <p id="employee-summary-status" role="status" aria-live="polite" hidden></p>
+        </section>
+
+        <section class="chat-assistant" aria-labelledby="chat-assistant-title">
+          <header class="chat-assistant__header">
+            <h2 id="chat-assistant-title">Leave Assistant</h2>
+            <p>Ask questions or manage your leave through the assistant.</p>
+          </header>
+
+          <div
+            id="chat-messages"
+            class="chat-assistant__messages"
+            role="log"
+            aria-label="Conversation"
+            aria-live="polite"
+            aria-relevant="additions text"
+          >
+            <article class="chat-message chat-message--assistant">
+              <p class="chat-message__sender">Leave Assistant</p>
+              <p class="chat-message__content">Hello! I can answer leave questions and help you manage your requests. How can I help?</p>
+            </article>
+          </div>
+
+          <p
+            id="chat-status"
+            class="chat-assistant__status"
+            role="status"
+            aria-live="polite"
+            hidden
+          ></p>
+
+          <form id="chat-form" class="chat-assistant__composer">
+            <label class="chat-assistant__input-label" for="chat-input">
+              Message
+            </label>
+            <div class="chat-assistant__input-row">
+              <textarea
+                id="chat-input"
+                name="message"
+                rows="2"
+                maxlength="2000"
+                placeholder="Ask about your leave..."
+                autocomplete="off"
+                required
+              ></textarea>
+              <button type="submit">Send</button>
+            </div>
+          </form>
+        </section>
+    </main>
+  </body>
+</html>

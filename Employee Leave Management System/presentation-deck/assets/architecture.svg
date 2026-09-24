@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="720" height="420" font-family="Inter,system-ui,sans-serif">
+  <defs>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#29cde3" stop-opacity="0.4"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="none" stroke="#8494ae" stroke-width="1.2"/>
+    </marker>
+  </defs>
+
+  <defs><pattern id="dot-grid" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.5" fill="#8180ff" opacity="0.12"/></pattern></defs>
+  <rect width="720" height="420" fill="#0d1322" rx="12"/>
+  <rect width="720" height="420" fill="url(#dot-grid)" rx="12"/>
+  <rect width="720" height="420" fill="none" stroke="#1e2540" stroke-width="2" rx="12"/>
+
+  <!-- ═══ LEFT: Clients ═══ -->
+  <rect x="16" y="60" width="120" height="52" rx="8" fill="#1e2540" stroke="#ffffff1f"/>
+  <text x="76" y="82" fill="#f8fafc" font-size="12" font-weight="600" text-anchor="middle">Browser</text>
+  <text x="76" y="98" fill="#a8b5ca" font-size="9" text-anchor="middle">Vanilla JS · REST</text>
+
+  <rect x="16" y="145" width="120" height="52" rx="8" fill="#1e2540" stroke="#ffffff1f"/>
+  <text x="76" y="167" fill="#f8fafc" font-size="12" font-weight="600" text-anchor="middle">MCP Client</text>
+  <text x="76" y="183" fill="#a8b5ca" font-size="9" text-anchor="middle">External agent</text>
+
+  <!-- Arrows: Clients → Backend -->
+  <line x1="136" y1="86" x2="180" y2="86" stroke="#8494ae" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="158" y="78" fill="#8494ae" font-size="8" text-anchor="middle">JWT</text>
+
+  <line x1="136" y1="171" x2="180" y2="171" stroke="#8494ae" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="158" y="163" fill="#8494ae" font-size="8" text-anchor="middle">JWT</text>
+
+  <!-- ═══ CENTER: Spring Boot container ═══ -->
+  <rect x="180" y="20" width="310" height="380" rx="12" fill="none" stroke="url(#glow)" stroke-width="1.5" stroke-dasharray="6 3"/>
+  <text x="335" y="42" fill="#a8b5ca" font-size="11" font-weight="700" text-anchor="middle" letter-spacing="0.08em">SPRING BOOT 4.1</text>
+
+  <!-- Auth Layer -->
+  <rect x="196" y="58" width="130" height="40" rx="6" fill="#1e2540" stroke="#8180ff" stroke-opacity="0.5"/>
+  <text x="261" y="75" fill="#8180ff" font-size="11" font-weight="600" text-anchor="middle">Auth Layer</text>
+  <text x="261" y="90" fill="#a8b5ca" font-size="8" text-anchor="middle">JWT · BCrypt · OAuth2 RS</text>
+
+  <!-- AI Assistant -->
+  <rect x="196" y="112" width="130" height="50" rx="6" fill="#1e2540" stroke="#29cde3" stroke-opacity="0.5"/>
+  <text x="261" y="132" fill="#29cde3" font-size="11" font-weight="600" text-anchor="middle">AI Assistant</text>
+  <text x="261" y="146" fill="#a8b5ca" font-size="8" text-anchor="middle">ChatClient · policy tool</text>
+  <text x="261" y="156" fill="#a8b5ca" font-size="8" text-anchor="middle">Memory · Error Boundary</text>
+
+  <!-- MCP Server -->
+  <rect x="196" y="176" width="130" height="36" rx="6" fill="#1e2540" stroke="#29cde3" stroke-opacity="0.5"/>
+  <text x="261" y="198" fill="#29cde3" font-size="11" font-weight="600" text-anchor="middle">MCP Server</text>
+
+  <!-- Tool Layer (shared) -->
+  <rect x="350" y="112" width="124" height="100" rx="6" fill="#1e2540" stroke="#29cde3" stroke-opacity="0.7"/>
+  <text x="412" y="135" fill="#29cde3" font-size="11" font-weight="700" text-anchor="middle">@Tool Layer</text>
+  <text x="412" y="151" fill="#a8b5ca" font-size="8" text-anchor="middle">EmployeeTools</text>
+  <text x="412" y="163" fill="#a8b5ca" font-size="8" text-anchor="middle">ManagerTools</text>
+  <text x="412" y="175" fill="#a8b5ca" font-size="8" text-anchor="middle">PolicyTools</text>
+  <text x="412" y="187" fill="#a8b5ca" font-size="8" text-anchor="middle">ToolCallContext</text>
+  <text x="412" y="203" fill="#8494ae" font-size="7" text-anchor="middle">shared by ChatClient + MCP</text>
+
+  <!-- Domain Services -->
+  <rect x="196" y="232" width="278" height="68" rx="6" fill="#1e2540" stroke="#ffffff1f"/>
+  <text x="335" y="254" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">Domain Services</text>
+  <text x="265" y="272" fill="#a8b5ca" font-size="9" text-anchor="middle">LeaveApplication</text>
+  <text x="370" y="272" fill="#a8b5ca" font-size="9" text-anchor="middle">LeaveDecision</text>
+  <text x="265" y="286" fill="#a8b5ca" font-size="9" text-anchor="middle">MedicalCertificate</text>
+  <text x="370" y="286" fill="#a8b5ca" font-size="9" text-anchor="middle">Employee</text>
+
+  <!-- REST Controllers -->
+  <rect x="196" y="314" width="278" height="34" rx="6" fill="#1e2540" stroke="#ffffff1f"/>
+  <text x="335" y="336" fill="#f8fafc" font-size="11" font-weight="600" text-anchor="middle">REST Controllers</text>
+
+  <!-- Flyway -->
+  <rect x="196" y="360" width="278" height="28" rx="6" fill="#1e2540" stroke="#ffffff1f"/>
+  <text x="335" y="379" fill="#a8b5ca" font-size="10" font-weight="600" text-anchor="middle">Flyway Migrations · V1–V5</text>
+
+  <!-- Internal arrows -->
+  <!-- AI Assistant → Tool Layer -->
+  <line x1="326" y1="137" x2="348" y2="137" stroke="#29cde3" stroke-opacity="0.6" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- MCP → Tool Layer -->
+  <line x1="326" y1="194" x2="348" y2="180" stroke="#29cde3" stroke-opacity="0.6" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- Tool Layer → Domain -->
+  <line x1="412" y1="212" x2="412" y2="230" stroke="#8494ae" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- REST → Domain -->
+  <line x1="335" y1="314" x2="335" y2="302" stroke="#8494ae" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- Auth → AI / MCP (guards) -->
+  <line x1="261" y1="98" x2="261" y2="110" stroke="#8180ff" stroke-opacity="0.4" stroke-width="1" stroke-dasharray="3 2"/>
+
+  <!-- ═══ RIGHT: External Services ═══ -->
+  <!-- Gemini -->
+  <rect x="520" y="58" width="180" height="45" rx="8" fill="#1e2540" stroke="#29cde3" stroke-opacity="0.5"/>
+  <text x="610" y="78" fill="#29cde3" font-size="12" font-weight="600" text-anchor="middle">Gemini 3.5 Flash-Lite</text>
+  <text x="610" y="93" fill="#a8b5ca" font-size="9" text-anchor="middle">LLM · Chat completions</text>
+
+  <!-- Ollama -->
+  <rect x="520" y="118" width="180" height="45" rx="8" fill="#1e2540" stroke="#29cde3" stroke-opacity="0.5"/>
+  <text x="610" y="138" fill="#29cde3" font-size="12" font-weight="600" text-anchor="middle">Ollama</text>
+  <text x="610" y="153" fill="#a8b5ca" font-size="9" text-anchor="middle">nomic-embed-text · Embeddings</text>
+
+  <!-- PostgreSQL -->
+  <rect x="520" y="190" width="180" height="90" rx="8" fill="#1e2540" stroke="#ffffff1f"/>
+  <text x="610" y="212" fill="#f8fafc" font-size="12" font-weight="700" text-anchor="middle">PostgreSQL 17</text>
+  <text x="566" y="232" fill="#29cde3" font-size="9">pgvector</text>
+  <text x="640" y="232" fill="#a8b5ca" font-size="9">leave_balance</text>
+  <text x="566" y="247" fill="#a8b5ca" font-size="9">leave_request</text>
+  <text x="640" y="247" fill="#a8b5ca" font-size="9">employee</text>
+  <text x="610" y="268" fill="#8494ae" font-size="8" text-anchor="middle">CHECK constraints · PESSIMISTIC_WRITE</text>
+
+  <!-- Arrows: Backend → External -->
+  <!-- AI Assistant → Gemini -->
+  <line x1="326" y1="125" x2="336" y2="125" stroke="none"/>
+  <path d="M326,125 Q470,60 518,80" fill="none" stroke="#29cde3" stroke-opacity="0.5" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="440" y="68" fill="#29cde3" font-size="8" text-anchor="middle" opacity="0.7">chat</text>
+
+  <!-- RAG → pgvector -->
+  <path d="M326,148 Q470,148 518,210" fill="none" stroke="#29cde3" stroke-opacity="0.4" stroke-width="1" marker-end="url(#arrow)" stroke-dasharray="4 2"/>
+  <text x="440" y="164" fill="#29cde3" font-size="8" text-anchor="middle" opacity="0.7">similarity search</text>
+
+  <!-- Ollama → pgvector -->
+  <line x1="610" y1="163" x2="610" y2="188" stroke="#29cde3" stroke-opacity="0.4" stroke-width="1" marker-end="url(#arrow)" stroke-dasharray="4 2"/>
+  <text x="648" y="180" fill="#29cde3" font-size="7" opacity="0.6">embed</text>
+
+  <!-- Domain → PostgreSQL -->
+  <line x1="476" y1="266" x2="518" y2="245" stroke="#8494ae" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="500" y="262" fill="#8494ae" font-size="8">JPA</text>
+
+  <!-- Legend -->
+  <line x1="530" y1="330" x2="556" y2="330" stroke="#29cde3" stroke-opacity="0.6" stroke-width="1.5"/>
+  <text x="562" y="334" fill="#a8b5ca" font-size="8">AI / Retrieval</text>
+  <line x1="530" y1="348" x2="556" y2="348" stroke="#8180ff" stroke-opacity="0.6" stroke-width="1.5"/>
+  <text x="562" y="352" fill="#a8b5ca" font-size="8">Auth / Security</text>
+  <line x1="530" y1="366" x2="556" y2="366" stroke="#8494ae" stroke-width="1.5"/>
+  <text x="562" y="370" fill="#a8b5ca" font-size="8">Data flow</text>
+
+  <!-- Title -->
+  <text x="76" y="35" fill="#f8fafc" font-size="14" font-weight="800" text-anchor="middle">ELMS</text>
+  <text x="76" y="50" fill="#8494ae" font-size="8" text-anchor="middle">Architecture</text>
+</svg>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>ELMS | Technical Project Walkthrough</title>
+  <link rel="stylesheet" href="deck.css">
+  <script src="slides.js" defer></script>
+  <script src="deck.js" defer></script>
+</head>
+<body>
+  <header class="deck-header">
+    <div class="brand-block"><span class="brand-logo">E</span><h1>ELMS</h1><span class="brand-tag">Technical Project Walkthrough</span></div>
+    <button id="notesButton" aria-pressed="false" title="Show presenter notes (N)">Presenter notes</button>
+  </header>
+  <div class="progress-track" aria-hidden="true"><div id="progressFill"></div></div>
+  <main class="presentation">
+    <section class="viewport" aria-label="ELMS presentation"><div id="slides"></div></section>
+    <footer class="controls">
+      <div class="control-group"><button id="playButton" class="primary" aria-pressed="false">Auto play</button><span id="counter" role="status" aria-live="polite"></span></div>
+      <nav class="control-group" aria-label="Slide navigation"><button id="prevButton" aria-label="Previous slide">← Prev</button><div id="dots" class="dots"></div><button id="nextButton" aria-label="Next slide">Next →</button></nav>
+      <div class="control-group"><span class="key-hint">← / → Navigate · N Notes</span><button id="fullscreenButton">Fullscreen</button></div>
+    </footer>
+  </main>
+  <aside id="notes" hidden aria-label="Presenter notes"><button id="closeNotes" aria-label="Close presenter notes">Close</button><h2 id="notesTitle"></h2><div id="notesBody"></div></aside>
+  <p class="sr-only" id="announce" role="status"></p>
+  <noscript>This presentation needs JavaScript enabled. Open index.html in a browser with scripts enabled.</noscript>
+</body>
+</html>
